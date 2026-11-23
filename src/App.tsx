@@ -7,6 +7,7 @@ import {
   MapPin,
   Share2,
   UserPlus,
+  Star,
 } from 'lucide-react';
 import {
   CLINIC_INFO,
@@ -238,6 +239,16 @@ export function App() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-2.5">
+            <a
+              href={CLINIC_INFO.googleReviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#C9A227] hover:bg-[#B08C1C] text-[#1A1405] border border-[#C9A227] text-xs font-extrabold transition"
+            >
+              <Star className="w-4 h-4 fill-current" />
+              <span>قيّم زيارتك على جوجل</span>
+            </a>
+
             <button
               type="button"
               onClick={downloadClinicVCard}
