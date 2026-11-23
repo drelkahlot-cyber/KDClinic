@@ -22,6 +22,7 @@ import { ClinicRoomsSection } from './components/ClinicRoomsSection';
 import { DoctorAndLocationSection } from './components/DoctorAndLocationSection';
 import { ImageLightboxModal, LightboxSlide } from './components/ImageLightboxModal';
 import { QrShareModal } from './components/QrShareModal';
+import { FaqSection } from './components/FaqSection';
 
 export function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -213,6 +214,9 @@ export function App() {
 
         {/* 5. Doctor Credentials & Clinic Location */}
         <DoctorAndLocationSection />
+
+        {/* 6. Frequently Asked Questions (also published as FAQPage schema) */}
+        <FaqSection />
       </main>
 
       {/* Official Clinic Footer */}

@@ -79,7 +79,7 @@ export function downloadClinicVCard(): void {
     `TEL;TYPE=WORK,VOICE:${CLINIC_INFO.phonePrimaryIntl}`,
     `TEL;TYPE=CELL,VOICE:+${CLINIC_INFO.phoneWhatsappIntl}`,
     `ADR;TYPE=WORK:;;${CLINIC_INFO.addressShort} - ${CLINIC_INFO.addressLandmark};القاهرة;;11769;مصر`,
-    `URL:${CLINIC_INFO.mapsUrl}`,
+    'URL:https://www.kahlotdental.com/',
     `NOTE:${CLINIC_INFO.doctorTitle} - ${CLINIC_INFO.doctorMembership}`,
     'END:VCARD',
   ].join('\r\n');
@@ -256,5 +256,52 @@ export const CLINIC_ROOMS: ClinicRoomItem[] = [
     badge: 'التصميم الداخلي',
     image: clinicImg2,
     spanClass: 'md:col-span-1 lg:col-span-6',
+  },
+];
+
+export interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+// Shown on the page (FaqSection) and published as FAQPage structured data at
+// build time (scripts/prerender.mjs), so the two always match.
+export const FAQ_LIST: FaqItem[] = [
+  {
+    id: 'location',
+    question: 'أين تقع عيادة الكحلوت للأسنان؟',
+    answer:
+      'العيادة في ٦٤ شارع عبدالعزيز حجازي، التجاريين، جسر السويس، بجوار محطة مترو الهايكستب - القاهرة. ويمكنك فتح موقع العيادة على خرائط جوجل مباشرة من زر الخريطة في الصفحة.',
+  },
+  {
+    id: 'booking',
+    question: 'كيف أحجز موعداً في العيادة؟',
+    answer:
+      'يمكنك الحجز برسالة واتساب على الرقم 01006641810، أو الاتصال بالعيادة على 01019616260، أو الحجز أونلاين عبر صفحة الدكتور على فيزيتا.',
+  },
+  {
+    id: 'insurance',
+    question: 'هل العيادة متعاقدة مع التأمين الطبي؟',
+    answer:
+      'نعم، العيادة متعاقدة مع جميع شركات التأمين الطبي والهيئات والنقابات الحكومية وقطاع البترول. تواصل معنا على واتساب لتأكيد تفاصيل تعاقدك قبل الزيارة.',
+  },
+  {
+    id: 'services',
+    question: 'ما الخدمات التي تقدمها العيادة؟',
+    answer:
+      'زراعة الأسنان، جراحة الفم والأسنان، إعادة تأهيل الفكين، تجميل الأسنان وابتسامة هوليود (زيركون وإيماكس وعدسات)، حشو العصب، الحشو التجميلي، تقويم الأسنان، أسنان الأطفال، والكشف والاستشارة.',
+  },
+  {
+    id: 'doctor',
+    question: 'من هو الطبيب المعالج في العيادة؟',
+    answer:
+      'د. عبدالرحمن الكحلوت، أخصائي جراحة وزراعة وتجميل الأسنان وعضو الجمعية المصرية لزراعة الأسنان.',
+  },
+  {
+    id: 'metro',
+    question: 'هل العيادة قريبة من المترو؟',
+    answer:
+      'نعم، العيادة بجوار محطة مترو الهايكستب في جسر السويس، فالوصول إليها سهل بالمترو.',
   },
 ];
