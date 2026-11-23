@@ -7,17 +7,16 @@ import { defineConfig, type Plugin } from "vite";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// The clinic's official domain. Canonical, Open Graph and structured-data
+// URLs always point here so Google and link previews use kahlotdental.com,
+// never a *.vercel.app address. Override with SITE_URL only if the domain changes.
+const PRODUCTION_SITE_URL = "https://www.kahlotdental.com";
+
 function resolveSiteUrl(): string {
   if (process.env.SITE_URL) {
     return process.env.SITE_URL.replace(/\/+$/, "");
   }
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
-  return "https://kdclinic.vercel.app";
+  return PRODUCTION_SITE_URL;
 }
 
 function injectSiteUrlPlugin(): Plugin {
