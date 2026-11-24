@@ -383,3 +383,14 @@ export const PATIENT_REVIEWS: PatientReview[] = [
     text: 'دكتور كويس',
   },
 ];
+
+// Nearby areas our patients come from (shown in the location section and
+// published as areaServed). Keep it to areas that really are close by.
+export const SERVED_AREAS: string[] = [
+  'التجاريين',
+  'جسر السويس',
+  'شارع جمال عبدالناصر',
+  'مدينة قباء',
+  'مدينة السلام',
+  'الهايكستب',
+];

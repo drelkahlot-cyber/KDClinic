@@ -222,4 +222,11 @@ export const EN: Record<string, string> = {
   "مراجعة على فيزيتا": "Vezeeta review (in Arabic)",
   "مراجعة على كلينيدو": "CliniDo review (in Arabic)",
   "تقييمات حقيقية من مرضانا": "Real patient reviews",
+  "المناطق اللي بنخدمها": "Areas we serve",
+  "العيادة قريبة من مرضانا في:": "The clinic is close to patients in:",
+  "التجاريين": "El Togareen",
+  "شارع جمال عبدالناصر": "Gamal Abdel Nasser St.",
+  "مدينة قباء": "Qubaa City",
+  "مدينة السلام": "El Salam City",
+  "الهايكستب": "Haykestep",
 };

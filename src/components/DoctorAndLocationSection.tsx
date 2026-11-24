@@ -13,7 +13,7 @@ import {
   Handshake,
   Clock,
 } from 'lucide-react';
-import { CLINIC_INFO, OPENING_HOURS } from '../data/clinicData';
+import { CLINIC_INFO, OPENING_HOURS, SERVED_AREAS } from '../data/clinicData';
 import { KdcLogo } from './KdcLogo';
 
 export const DoctorAndLocationSection: React.FC = () => {
@@ -176,6 +176,24 @@ export const DoctorAndLocationSection: React.FC = () => {
                   )}
                 </button>
               </div>
+            </div>
+
+            {/* Areas We Serve */}
+            <div className="mt-4 rounded-2xl bg-[var(--bg)] border border-[var(--line)] p-4 sm:p-5">
+              <h3 className="text-xs font-bold text-[var(--muted)]">{t("المناطق اللي بنخدمها")}</h3>
+              <p className="text-sm text-[var(--ink)] mt-1 leading-relaxed">
+                {t("العيادة قريبة من مرضانا في:")}
+              </p>
+              <ul className="mt-2.5 flex flex-wrap gap-2">
+                {SERVED_AREAS.map((area) => (
+                  <li
+                    key={area}
+                    className="px-3 py-1.5 rounded-xl bg-[var(--surface)] border border-[var(--line)] text-xs sm:text-sm font-bold text-[var(--ink)]"
+                  >
+                    {t(area)}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Opening Hours Box */}
