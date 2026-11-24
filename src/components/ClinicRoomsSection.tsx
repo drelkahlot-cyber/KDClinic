@@ -1,4 +1,5 @@
 import React from 'react';
+import { useT } from '../i18n';
 import { Maximize2, ShieldCheck, Sparkles } from 'lucide-react';
 import { CLINIC_ROOMS, ClinicRoomItem } from '../data/clinicData';
 
@@ -7,6 +8,7 @@ interface ClinicRoomsSectionProps {
 }
 
 export const ClinicRoomsSection: React.FC<ClinicRoomsSectionProps> = ({ onOpenLightbox }) => {
+  const t = useT();
   return (
     <section
       id="clinic-tour"
@@ -18,22 +20,18 @@ export const ClinicRoomsSection: React.FC<ClinicRoomsSectionProps> = ({ onOpenLi
         <div>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F5C6E]/10 dark:bg-[#2AA6BE]/15 border border-[#0F5C6E]/20 dark:border-[#2AA6BE]/30 text-[#0F5C6E] dark:text-[#2AA6BE] text-xs font-extrabold mb-2.5">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>بيئة طبية متكاملة ومعقمة</span>
+            <span>{t("بيئة طبية متكاملة ومعقمة")}</span>
           </div>
           <h2
             id="clinic-tour-heading"
             className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-[var(--ink)]"
-          >
-            العيادة من الداخل
-          </h2>
-          <p className="text-sm sm:text-base text-[var(--muted)] mt-1.5 max-w-2xl">
-            تجهيزات طبية حديثة ومساحات استقبال مصممة بعناية لتوفير أقصى درجات الراحة والخصوصية والتعقيم.
-          </p>
+          >{t("العيادة من الداخل")}</h2>
+          <p className="text-sm sm:text-base text-[var(--muted)] mt-1.5 max-w-2xl">{t("تجهيزات طبية حديثة ومساحات استقبال مصممة بعناية لتوفير أقصى درجات الراحة والخصوصية والتعقيم.")}</p>
         </div>
 
         <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[var(--brand)] bg-[var(--surface)] px-3.5 py-2 rounded-xl border border-[var(--line)] shrink-0">
           <Sparkles className="w-4 h-4 text-[#C9A227]" />
-          <span>٦ صور حقيقية من داخل العيادة</span>
+          <span>{t("٦ صور حقيقية من داخل العيادة")}</span>
         </div>
       </div>
 
@@ -45,7 +43,7 @@ export const ClinicRoomsSection: React.FC<ClinicRoomsSectionProps> = ({ onOpenLi
             onClick={() => onOpenLightbox(idx)}
             role="button"
             tabIndex={0}
-            aria-label={`عرض صورة ${room.title}`}
+            aria-label={`${t('عرض صورة')} ${t(room.title)}`}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -58,7 +56,7 @@ export const ClinicRoomsSection: React.FC<ClinicRoomsSectionProps> = ({ onOpenLi
             <div className="relative aspect-square sm:aspect-auto sm:h-[300px] lg:h-[350px] w-full overflow-hidden bg-slate-900">
               <img
                 src={room.image}
-                alt={room.title}
+                alt={t(room.title)}
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -68,7 +66,7 @@ export const ClinicRoomsSection: React.FC<ClinicRoomsSectionProps> = ({ onOpenLi
               {/* Top Badges */}
               <div className="absolute top-2 right-2 left-2 sm:top-3.5 sm:right-3.5 sm:left-3.5 flex items-center justify-between gap-1">
                 <span className="px-1.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/15 text-white text-[9.5px] sm:text-xs font-bold leading-tight">
-                  {room.badge}
+                  {t(room.badge)}
                 </span>
 
                 <span className="w-6 h-6 sm:w-9 sm:h-9 rounded-full bg-black/65 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-[var(--brand)] group-hover:text-[var(--brand-ink)] transition shrink-0">
@@ -79,10 +77,10 @@ export const ClinicRoomsSection: React.FC<ClinicRoomsSectionProps> = ({ onOpenLi
               {/* Bottom Overlay Title & Description */}
               <div className="absolute bottom-0 inset-x-0 p-2.5 sm:p-5 text-white">
                 <h3 className="text-xs sm:text-xl font-extrabold leading-snug drop-shadow-sm">
-                  {room.title}
+                  {t(room.title)}
                 </h3>
                 <p className="hidden sm:block text-xs sm:text-sm text-gray-200 mt-1 line-clamp-2 leading-relaxed">
-                  {room.subtitle}
+                  {t(room.subtitle)}
                 </p>
               </div>
             </div>

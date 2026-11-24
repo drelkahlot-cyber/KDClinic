@@ -163,3 +163,8 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* English (LTR) page: the arrow icons are drawn for RTL, so mirror them. */
+[dir='ltr'] .lucide-arrow-up-left {
+  transform: scaleX(-1);
+}

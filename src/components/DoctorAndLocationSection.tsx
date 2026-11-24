@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useT } from '../i18n';
 import {
   Award,
   MapPin,
@@ -15,11 +16,12 @@ import { CLINIC_INFO } from '../data/clinicData';
 import { KdcLogo } from './KdcLogo';
 
 export const DoctorAndLocationSection: React.FC = () => {
+  const t = useT();
   const [copiedAddress, setCopiedAddress] = useState(false);
 
   const handleCopyAddress = async () => {
     try {
-      await navigator.clipboard.writeText(CLINIC_INFO.addressFull);
+      await navigator.clipboard.writeText(t(CLINIC_INFO.addressFull));
       setCopiedAddress(true);
       setTimeout(() => setCopiedAddress(false), 2200);
     } catch {
@@ -40,17 +42,17 @@ export const DoctorAndLocationSection: React.FC = () => {
             <div className="flex items-center justify-between gap-4 mb-6">
               <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-[#F3D87D] text-xs font-extrabold">
                 <Award className="w-4 h-4" />
-                <span>إشراف طبي متخصص</span>
+                <span>{t("إشراف طبي متخصص")}</span>
               </span>
               <KdcLogo className="h-10" variant="gold" />
             </div>
 
-            <span className="text-xs sm:text-sm font-bold text-[#F3D87D] block">عن الدكتور</span>
+            <span className="text-xs sm:text-sm font-bold text-[#F3D87D] block">{t("عن الدكتور")}</span>
             <h2
               id="about-doctor-heading"
               className="text-2xl sm:text-3xl font-black text-white mt-1"
             >
-              {CLINIC_INFO.doctorName}
+              {t(CLINIC_INFO.doctorName)}
             </h2>
 
             <div className="kdc-gold-line my-5" />
@@ -62,11 +64,9 @@ export const DoctorAndLocationSection: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-base font-extrabold text-white leading-snug">
-                    {CLINIC_INFO.doctorTitle}
+                    {t(CLINIC_INFO.doctorTitle)}
                   </h3>
-                  <p className="text-[11px] sm:text-xs text-gray-300 mt-1 leading-relaxed">
-                    خبرة إكلينيكية دقيقة في جراحات الفم، غرسات الأسنان التعويضية، وتصميم الابتسامة التجميلية.
-                  </p>
+                  <p className="text-[11px] sm:text-xs text-gray-300 mt-1 leading-relaxed">{t("خبرة إكلينيكية دقيقة في جراحات الفم، غرسات الأسنان التعويضية، وتصميم الابتسامة التجميلية.")}</p>
                 </div>
               </li>
 
@@ -76,11 +76,9 @@ export const DoctorAndLocationSection: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-base font-extrabold text-white leading-snug">
-                    {CLINIC_INFO.doctorMembership}
+                    {t(CLINIC_INFO.doctorMembership)}
                   </h3>
-                  <p className="text-[11px] sm:text-xs text-gray-300 mt-1 leading-relaxed">
-                    تطبيق أحدث البروتوكولات المعتمدة في زراعة الأسنان وإعادة تأهيل الفكين.
-                  </p>
+                  <p className="text-[11px] sm:text-xs text-gray-300 mt-1 leading-relaxed">{t("تطبيق أحدث البروتوكولات المعتمدة في زراعة الأسنان وإعادة تأهيل الفكين.")}</p>
                 </div>
               </li>
 
@@ -89,12 +87,8 @@ export const DoctorAndLocationSection: React.FC = () => {
                   <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xs sm:text-base font-extrabold text-white leading-snug">
-                    أعلى معايير التعقيم ومكافحة العدوى
-                  </h3>
-                  <p className="text-[11px] sm:text-xs text-gray-300 mt-1 leading-relaxed">
-                    بيئة علاجية آمنة ومجهزة بأحدث الأجهزة لضمان راحة المريض ودقة النتائج.
-                  </p>
+                  <h3 className="text-xs sm:text-base font-extrabold text-white leading-snug">{t("أعلى معايير التعقيم ومكافحة العدوى")}</h3>
+                  <p className="text-[11px] sm:text-xs text-gray-300 mt-1 leading-relaxed">{t("بيئة علاجية آمنة ومجهزة بأحدث الأجهزة لضمان راحة المريض ودقة النتائج.")}</p>
                 </div>
               </li>
 
@@ -103,12 +97,8 @@ export const DoctorAndLocationSection: React.FC = () => {
                   <Handshake className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xs sm:text-base font-extrabold text-white leading-snug">
-                    التأمين الطبي والتعاقدات المعتمدة
-                  </h3>
-                  <p className="text-[11px] sm:text-xs text-gray-200 mt-1 font-semibold leading-relaxed">
-                    متعاقدون مع جميع شركات التأمين الطبي والهيئات والنقابات الحكومية وقطاع البترول.
-                  </p>
+                  <h3 className="text-xs sm:text-base font-extrabold text-white leading-snug">{t("التأمين الطبي والتعاقدات المعتمدة")}</h3>
+                  <p className="text-[11px] sm:text-xs text-gray-200 mt-1 font-semibold leading-relaxed">{t("متعاقدون مع جميع شركات التأمين الطبي والهيئات والنقابات الحكومية وقطاع البترول.")}</p>
                 </div>
               </li>
             </ul>
@@ -122,7 +112,7 @@ export const DoctorAndLocationSection: React.FC = () => {
               className="sm:flex-1 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-3 sm:px-5 sm:py-3.5 rounded-2xl bg-[#1E9E55] hover:bg-[#178044] text-white font-extrabold text-xs sm:text-base shadow-lg transition"
             >
               <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
-              <span>احجز كشفك عبر واتساب</span>
+              <span>{t("احجز كشفك عبر واتساب")}</span>
             </a>
 
             <a
@@ -142,15 +132,11 @@ export const DoctorAndLocationSection: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F5C6E]/10 dark:bg-[#2AA6BE]/15 border border-[#0F5C6E]/20 dark:border-[#2AA6BE]/30 text-[#0F5C6E] dark:text-[#2AA6BE] text-xs font-extrabold mb-4">
               <MapPin className="w-4 h-4" />
-              <span>عنوان العيادة والاتجاهات</span>
+              <span>{t("عنوان العيادة والاتجاهات")}</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-black text-[var(--ink)]">
-              موقع العيادة على الخريطة
-            </h2>
-            <p className="text-sm sm:text-base text-[var(--muted)] mt-1.5">
-              موقع مميز يسهل الوصول إليه عبر المترو أو السيارة في جسر السويس.
-            </p>
+            <h2 className="text-2xl sm:text-3xl font-black text-[var(--ink)]">{t("موقع العيادة على الخريطة")}</h2>
+            <p className="text-sm sm:text-base text-[var(--muted)] mt-1.5">{t("موقع مميز يسهل الوصول إليه عبر المترو أو السيارة في جسر السويس.")}</p>
 
             {/* Address Detail Box */}
             <div className="mt-6 rounded-2xl bg-[var(--bg)] border border-[var(--line)] p-4 sm:p-5 space-y-3">
@@ -159,20 +145,18 @@ export const DoctorAndLocationSection: React.FC = () => {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold text-[var(--muted)] block">العنوان بالتفصيل:</span>
+                  <span className="text-xs font-bold text-[var(--muted)] block">{t("العنوان بالتفصيل:")}</span>
                   <p className="text-base sm:text-lg font-extrabold text-[var(--ink)] leading-snug mt-0.5">
-                    {CLINIC_INFO.addressShort}
+                    {t(CLINIC_INFO.addressShort)}
                   </p>
                   <p className="text-sm font-bold text-[var(--brand)] mt-1">
-                    {CLINIC_INFO.addressLandmark}
+                    {t(CLINIC_INFO.addressLandmark)}
                   </p>
                 </div>
               </div>
 
               <div className="pt-3 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-2">
-                <span className="text-xs font-semibold text-[var(--muted)]">
-                  انسخ العنوان لمشاركته أو البحث عنه بسهولة
-                </span>
+                <span className="text-xs font-semibold text-[var(--muted)]">{t("انسخ العنوان لمشاركته أو البحث عنه بسهولة")}</span>
                 <button
                   type="button"
                   onClick={handleCopyAddress}
@@ -181,12 +165,12 @@ export const DoctorAndLocationSection: React.FC = () => {
                   {copiedAddress ? (
                     <>
                       <Check className="w-4 h-4 text-[#1E9E55]" />
-                      <span className="text-[#1E9E55]">تم نسخ العنوان</span>
+                      <span className="text-[#1E9E55]">{t("تم نسخ العنوان")}</span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-3.5 h-3.5 text-[var(--brand)]" />
-                      <span>نسخ العنوان</span>
+                      <span>{t("نسخ العنوان")}</span>
                     </>
                   )}
                 </button>
@@ -200,9 +184,7 @@ export const DoctorAndLocationSection: React.FC = () => {
                 className="flex items-center justify-between gap-1.5 p-2.5 sm:p-4 rounded-2xl bg-[var(--bg)] border border-[var(--line)] hover:border-[var(--brand)] transition group"
               >
                 <div className="min-w-0">
-                  <span className="text-[10.5px] sm:text-xs text-[var(--muted)] block font-semibold">
-                    اتصال مباشر ١
-                  </span>
+                  <span className="text-[10.5px] sm:text-xs text-[var(--muted)] block font-semibold">{t("اتصال مباشر ١")}</span>
                   <span className="text-[11.5px] sm:text-base font-num font-black text-[var(--ink)] group-hover:text-[var(--brand)] whitespace-nowrap" dir="ltr">
                     {CLINIC_INFO.phonePrimary}
                   </span>
@@ -217,9 +199,7 @@ export const DoctorAndLocationSection: React.FC = () => {
                 className="flex items-center justify-between gap-1.5 p-2.5 sm:p-4 rounded-2xl bg-[var(--bg)] border border-[var(--line)] hover:border-[var(--brand)] transition group"
               >
                 <div className="min-w-0">
-                  <span className="text-[10.5px] sm:text-xs text-[var(--muted)] block font-semibold">
-                    اتصال / واتساب ٢
-                  </span>
+                  <span className="text-[10.5px] sm:text-xs text-[var(--muted)] block font-semibold">{t("اتصال / واتساب ٢")}</span>
                   <span className="text-[11.5px] sm:text-base font-num font-black text-[var(--ink)] group-hover:text-[var(--brand)] whitespace-nowrap" dir="ltr">
                     {CLINIC_INFO.phoneWhatsapp}
                   </span>
@@ -241,11 +221,9 @@ export const DoctorAndLocationSection: React.FC = () => {
             >
               <span className="flex items-center gap-3">
                 <Navigation className="w-5 h-5 shrink-0" />
-                <span>افتح موقع العيادة على خرائط جوجل</span>
+                <span>{t("افتح موقع العيادة على خرائط جوجل")}</span>
               </span>
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-black/15">
-                اتجاهات الوصول
-              </span>
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-black/15">{t("اتجاهات الوصول")}</span>
             </a>
           </div>
         </div>

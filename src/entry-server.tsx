@@ -1,14 +1,16 @@
 import { renderToString } from 'react-dom/server';
 import App from './App';
 import { CLINIC_INFO, SERVICES_LIST, FAQ_LIST } from './data/clinicData';
+import { translate, type Lang } from './i18n';
 
 /**
- * Build-time render of the whole page to static HTML.
- * scripts/prerender.mjs injects the result into dist/index.html so search
- * engines and link-preview bots see the real content without running JS.
+ * Build-time render of the whole page to static HTML, once per language.
+ * scripts/prerender.mjs injects the result into dist/index.html (Arabic) and
+ * dist/en/index.html (English) so search engines and link-preview bots see the
+ * real content without running JS.
  */
-export function render(): string {
-  return renderToString(<App />);
+export function render(lang: Lang): string {
+  return renderToString(<App lang={lang} />);
 }
 
-export { CLINIC_INFO, SERVICES_LIST, FAQ_LIST };
+export { CLINIC_INFO, SERVICES_LIST, FAQ_LIST, translate };

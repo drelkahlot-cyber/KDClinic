@@ -1,4 +1,5 @@
 import React from 'react';
+import { useT } from '../i18n';
 import { MessageCircle, ArrowUpLeft, Stethoscope } from 'lucide-react';
 import { SERVICES_LIST, buildWhatsAppUrl, ServiceItem } from '../data/clinicData';
 
@@ -50,6 +51,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
 };
 
 export const ServicesSection: React.FC = () => {
+  const t = useT();
   return (
     <section
       id="services"
@@ -61,17 +63,13 @@ export const ServicesSection: React.FC = () => {
         <div>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F5C6E]/10 dark:bg-[#2AA6BE]/15 border border-[#0F5C6E]/20 dark:border-[#2AA6BE]/30 text-[#0F5C6E] dark:text-[#2AA6BE] text-xs font-extrabold mb-2.5">
             <Stethoscope className="w-3.5 h-3.5" />
-            <span>تخصصات طب وجراحة الأسنان</span>
+            <span>{t("تخصصات طب وجراحة الأسنان")}</span>
           </div>
           <h2
             id="services-heading"
             className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-[var(--ink)]"
-          >
-            الخدمات العلاجية والتجميلية
-          </h2>
-          <p className="text-sm sm:text-base text-[var(--muted)] mt-1.5 max-w-2xl">
-            اختر الخدمة المطلوبة للتواصل المباشر وحجز موعدك أو الاستفسار عبر واتساب العيادة.
-          </p>
+          >{t("الخدمات العلاجية والتجميلية")}</h2>
+          <p className="text-sm sm:text-base text-[var(--muted)] mt-1.5 max-w-2xl">{t("اختر الخدمة المطلوبة للتواصل المباشر وحجز موعدك أو الاستفسار عبر واتساب العيادة.")}</p>
         </div>
       </div>
 
@@ -82,7 +80,7 @@ export const ServicesSection: React.FC = () => {
           return (
             <a
               key={service.id}
-              href={buildWhatsAppUrl(service.whatsappText)}
+              href={buildWhatsAppUrl(t(service.whatsappText))}
               target="_blank"
               rel="noopener noreferrer"
               className={`${
@@ -97,7 +95,7 @@ export const ServicesSection: React.FC = () => {
 
                   {service.badge ? (
                     <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-[#C9A227]/15 border border-[#C9A227]/35 text-[#9A740C] dark:text-[#F3D87D] text-[10px] sm:text-xs font-extrabold whitespace-nowrap">
-                      {service.badge}
+                      {t(service.badge)}
                     </span>
                   ) : (
                     <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--bg)] flex items-center justify-center text-[var(--muted)] group-hover:text-[var(--brand)] transition shrink-0">
@@ -107,18 +105,18 @@ export const ServicesSection: React.FC = () => {
                 </div>
 
                 <h3 className="text-sm sm:text-xl font-extrabold text-[var(--ink)] group-hover:text-[var(--brand)] transition-colors leading-snug">
-                  {service.title}
+                  {t(service.title)}
                 </h3>
 
                 <p className="text-[11px] sm:text-sm text-[var(--muted)] mt-1 sm:mt-1.5 leading-relaxed">
-                  {service.subtitle}
+                  {t(service.subtitle)}
                 </p>
               </div>
 
               <div className="mt-3 pt-2.5 sm:mt-4 sm:pt-3 border-t border-[var(--line)]/70 flex items-center justify-between gap-1 text-[11px] sm:text-xs font-extrabold text-[#1E9E55] dark:text-[#34C173]">
                 <span className="inline-flex items-center gap-1 sm:gap-1.5 leading-tight">
                   <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-                  <span>احجز أو استفسر عبر واتساب</span>
+                  <span>{t("احجز أو استفسر عبر واتساب")}</span>
                 </span>
                 <ArrowUpLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-transform group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>

@@ -24,8 +24,20 @@ import { DoctorAndLocationSection } from './components/DoctorAndLocationSection'
 import { ImageLightboxModal, LightboxSlide } from './components/ImageLightboxModal';
 import { QrShareModal } from './components/QrShareModal';
 import { FaqSection } from './components/FaqSection';
+import { LangProvider, useLang, useT, otherLangHref, type Lang } from './i18n';
 
-export function App() {
+/** Page shell: provides the page language (Arabic at /, English at /en/). */
+export function App({ lang = 'ar' }: { lang?: Lang }) {
+  return (
+    <LangProvider value={lang}>
+      <ClinicPage />
+    </LangProvider>
+  );
+}
+
+function ClinicPage() {
+  const lang = useLang();
+  const t = useT();
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -47,6 +59,11 @@ export function App() {
   } | null>(null);
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }, [lang]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -72,12 +89,12 @@ export function App() {
       CLINICAL_CASES.map((c) => ({
         id: c.id,
         image: c.image,
-        title: c.title,
-        subtitle: `${c.procedureSummary} — (${c.afterNote})`,
-        badge: c.category,
-        whatsappInquiry: c.whatsappInquiry,
+        title: t(c.title),
+        subtitle: `${t(c.procedureSummary)} — (${t(c.afterNote)})`,
+        badge: t(c.category),
+        whatsappInquiry: t(c.whatsappInquiry),
       })),
-    []
+    [t]
   );
 
   const roomSlides: LightboxSlide[] = useMemo(
@@ -85,11 +102,11 @@ export function App() {
       CLINIC_ROOMS.map((r) => ({
         id: r.id,
         image: r.image,
-        title: r.title,
-        subtitle: r.subtitle,
-        badge: r.badge,
+        title: t(r.title),
+        subtitle: t(r.subtitle),
+        badge: t(r.badge),
       })),
-    []
+    [t]
   );
 
   const activeSlides = lightboxState?.group === 'cases' ? caseSlides : roomSlides;
@@ -103,61 +120,64 @@ export function App() {
           <a
             href="#"
             className="flex items-center gap-3 group focus:outline-none"
-            aria-label={CLINIC_INFO.nameAr}
+            aria-label={t(CLINIC_INFO.nameAr)}
           >
             <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl kdc-case-frame flex items-center justify-center p-1.5 shrink-0 shadow-sm">
               <KdcLogo className="h-6 sm:h-7" variant="gold" />
             </div>
             <div>
               <span className="text-base sm:text-lg font-black text-[var(--ink)] group-hover:text-[var(--brand)] transition-colors block leading-tight">
-                {CLINIC_INFO.nameAr}
+                {t(CLINIC_INFO.nameAr)}
               </span>
               <span className="text-xs font-bold text-[var(--muted)] block">
-                {CLINIC_INFO.doctorName}
+                {t(CLINIC_INFO.doctorName)}
               </span>
             </div>
           </a>
 
           {/* Desktop Navigation Links */}
           <nav
-            aria-label="أقسام الموقع"
+            aria-label={t("أقسام الموقع")}
             className="hidden lg:flex items-center gap-1 xl:gap-2 text-sm font-extrabold text-[var(--muted)]"
           >
             <a
               href="#cases"
               className="px-3.5 py-2 rounded-xl hover:bg-[var(--bg)] hover:text-[var(--brand)] transition"
-            >
-              نتائج حالات حقيقية
-            </a>
+            >{t("نتائج حالات حقيقية")}</a>
             <a
               href="#clinic-tour"
               className="px-3.5 py-2 rounded-xl hover:bg-[var(--bg)] hover:text-[var(--brand)] transition"
-            >
-              العيادة من الداخل
-            </a>
+            >{t("العيادة من الداخل")}</a>
             <a
               href="#services"
               className="px-3.5 py-2 rounded-xl hover:bg-[var(--bg)] hover:text-[var(--brand)] transition"
-            >
-              الخدمات العلاجية
-            </a>
+            >{t("الخدمات العلاجية")}</a>
             <a
               href="#about-location"
               className="px-3.5 py-2 rounded-xl hover:bg-[var(--bg)] hover:text-[var(--brand)] transition"
-            >
-              عن الدكتور والموقع
-            </a>
+            >{t("عن الدكتور والموقع")}</a>
           </nav>
 
           {/* Right Utility Controls */}
           <div className="flex items-center gap-2">
+            {/* Language Switch (Arabic / English) */}
+            <a
+              href={otherLangHref(lang)}
+              hrefLang={lang === 'ar' ? 'en' : 'ar'}
+              lang={lang === 'ar' ? 'en' : 'ar'}
+              className="h-10 sm:h-11 px-3 rounded-xl bg-[var(--bg)] hover:bg-[var(--brand)] hover:text-[var(--brand-ink)] border border-[var(--line)] flex items-center justify-center text-xs sm:text-sm font-extrabold text-[var(--ink)] transition focus:outline-none focus:ring-2 focus:ring-[var(--brand)]"
+              aria-label={lang === 'ar' ? 'View this page in English' : 'عرض الصفحة بالعربية'}
+            >
+              {lang === 'ar' ? 'English' : 'عربي'}
+            </a>
+
             {/* Theme Switcher */}
             <button
               type="button"
               onClick={toggleTheme}
               className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[var(--bg)] hover:bg-[var(--brand)] hover:text-[var(--brand-ink)] border border-[var(--line)] flex items-center justify-center text-[var(--ink)] transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--brand)]"
-              aria-label={theme === 'dark' ? 'تفعيل الوضع النهاري' : 'تفعيل الوضع الليلي'}
-              title={theme === 'dark' ? 'الوضع النهاري' : 'الوضع الليلي'}
+              aria-label={theme === 'dark' ? t('تفعيل الوضع النهاري') : t('تفعيل الوضع الليلي')}
+              title={theme === 'dark' ? t('الوضع النهاري') : t('الوضع الليلي')}
             >
               {theme === 'dark' ? (
                 <Sun className="w-5 h-5 text-[#F3D87D]" />
@@ -171,11 +191,11 @@ export function App() {
               type="button"
               onClick={() => setIsShareModalOpen(true)}
               className="w-10 h-10 sm:w-auto sm:px-3.5 sm:h-11 rounded-xl bg-[var(--bg)] hover:bg-[var(--brand)] hover:text-[var(--brand-ink)] border border-[var(--line)] flex items-center justify-center gap-2 text-xs font-extrabold text-[var(--ink)] transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--brand)]"
-              aria-label="حفظ رقم العيادة أو مشاركة الصفحة"
-              title="حفظ رقم العيادة أو مشاركة الصفحة"
+              aria-label={t("حفظ رقم العيادة أو مشاركة الصفحة")}
+              title={t("حفظ رقم العيادة أو مشاركة الصفحة")}
             >
               <Share2 className="w-4 h-4 text-[#C9A227]" />
-              <span className="hidden sm:inline">بطاقة العيادة</span>
+              <span className="hidden sm:inline">{t("بطاقة العيادة")}</span>
             </button>
 
             {/* Desktop WhatsApp CTA */}
@@ -186,7 +206,7 @@ export function App() {
               className="hidden sm:inline-flex items-center gap-2 px-4 h-11 rounded-xl bg-[#1E9E55] hover:bg-[#178044] text-white font-extrabold text-xs sm:text-sm shadow-sm transition"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>احجز الآن</span>
+              <span>{t("احجز الآن")}</span>
             </a>
           </div>
         </div>
@@ -222,19 +242,17 @@ export function App() {
 
       {/* Official Clinic Footer */}
       <footer className="mt-12 border-t border-[var(--line)] bg-[var(--surface)] py-8 sm:py-10">
-        <div className="ultrawide-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-right">
+        <div className="ultrawide-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-start">
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="w-12 h-12 rounded-2xl kdc-case-frame flex items-center justify-center p-1.5">
               <KdcLogo className="h-7" variant="gold" />
             </div>
             <div>
-              <p className="text-base font-black text-[var(--ink)]">
-                عيادة الكحلوت · KDC Dental
-              </p>
+              <p className="text-base font-black text-[var(--ink)]">{t("عيادة الكحلوت · KDC Dental")}</p>
               <p className="text-xs sm:text-sm text-[var(--muted)] mt-0.5">
-                {CLINIC_INFO.doctorName} — {CLINIC_INFO.doctorTitle}
+                {t(CLINIC_INFO.doctorName)} — {t(CLINIC_INFO.doctorTitle)}
               </p>
-              <p className="text-xs text-[var(--muted)] mt-0.5">{CLINIC_INFO.addressFull}</p>
+              <p className="text-xs text-[var(--muted)] mt-0.5">{t(CLINIC_INFO.addressFull)}</p>
             </div>
           </div>
 
@@ -246,7 +264,7 @@ export function App() {
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#C9A227] hover:bg-[#B08C1C] text-[#1A1405] border border-[#C9A227] text-xs font-extrabold transition"
             >
               <Star className="w-4 h-4 fill-current" />
-              <span>قيّم زيارتك على جوجل</span>
+              <span>{t("قيّم زيارتك على جوجل")}</span>
             </a>
 
             <button
@@ -255,7 +273,7 @@ export function App() {
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[var(--bg)] hover:bg-[var(--brand)] hover:text-[var(--brand-ink)] border border-[var(--line)] text-xs font-extrabold text-[var(--ink)] transition cursor-pointer"
             >
               <UserPlus className="w-4 h-4 text-[#C9A227]" />
-              <span>حفظ جهة الاتصال</span>
+              <span>{t("حفظ جهة الاتصال")}</span>
             </button>
 
             <button
@@ -264,7 +282,7 @@ export function App() {
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[var(--bg)] hover:bg-[var(--brand)] hover:text-[var(--brand-ink)] border border-[var(--line)] text-xs font-extrabold text-[var(--ink)] transition cursor-pointer"
             >
               <Share2 className="w-4 h-4" />
-              <span>مشاركة الصفحة</span>
+              <span>{t("مشاركة الصفحة")}</span>
             </button>
           </div>
         </div>
@@ -283,7 +301,7 @@ export function App() {
             className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#1E9E55] text-white font-extrabold text-xs sm:text-sm shadow-sm"
           >
             <MessageCircle className="w-4 h-4 shrink-0" />
-            <span>حجز واتساب</span>
+            <span>{t("حجز واتساب")}</span>
           </a>
 
           <a
@@ -291,7 +309,7 @@ export function App() {
             className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[var(--brand)] text-[var(--brand-ink)] font-extrabold text-xs sm:text-sm shadow-sm"
           >
             <Phone className="w-4 h-4 shrink-0" />
-            <span>اتصال مباشر</span>
+            <span>{t("اتصال مباشر")}</span>
           </a>
 
           <a
@@ -301,7 +319,7 @@ export function App() {
             className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[var(--bg)] border border-[var(--line)] text-[var(--ink)] font-extrabold text-xs sm:text-sm"
           >
             <MapPin className="w-4 h-4 text-[var(--brand)] shrink-0" />
-            <span>الخريطة</span>
+            <span>{t("الخريطة")}</span>
           </a>
         </div>
       </div>

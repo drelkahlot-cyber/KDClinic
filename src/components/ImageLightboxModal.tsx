@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { X, ChevronRight, ChevronLeft, ZoomIn, ZoomOut, MessageCircle } from 'lucide-react';
 import { CLINIC_INFO, buildWhatsAppUrl } from '../data/clinicData';
+import { useT } from '../i18n';
 
 export interface LightboxSlide {
   id: string;
@@ -24,6 +25,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
   onClose,
   onNavigate,
 }) => {
+  const t = useT();
   const [isZoomed, setIsZoomed] = useState(false);
 
   useEffect(() => {
@@ -85,8 +87,8 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
             type="button"
             onClick={() => setIsZoomed((z) => !z)}
             className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-            aria-label={isZoomed ? 'تصغير الصورة' : 'تكبير الصورة'}
-            title={isZoomed ? 'تصغير الصورة' : 'تكبير الصورة'}
+            aria-label={isZoomed ? t('تصغير الصورة') : t('تكبير الصورة')}
+            title={isZoomed ? t('تصغير الصورة') : t('تكبير الصورة')}
           >
             {isZoomed ? <ZoomOut className="w-5 h-5" /> : <ZoomIn className="w-5 h-5" />}
           </button>
@@ -94,7 +96,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
             type="button"
             onClick={onClose}
             className="p-2.5 rounded-full bg-white/10 hover:bg-red-500/80 text-white transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-white"
-            aria-label="إغلاق العرض"
+            aria-label={t("إغلاق العرض")}
           >
             <X className="w-5 h-5" />
           </button>
@@ -112,7 +114,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                 onNavigate((activeIndex - 1 + slides.length) % slides.length);
               }}
               className="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/65 hover:bg-[#0F5C6E] border border-white/20 flex items-center justify-center text-white shadow-xl transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-              aria-label="الصورة السابقة"
+              aria-label={t("الصورة السابقة")}
             >
               <ChevronRight className="w-6 h-6" />
             </button>
@@ -124,7 +126,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                 onNavigate((activeIndex + 1) % slides.length);
               }}
               className="fixed left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/65 hover:bg-[#0F5C6E] border border-white/20 flex items-center justify-center text-white shadow-xl transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-              aria-label="الصورة التالية"
+              aria-label={t("الصورة التالية")}
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
@@ -170,7 +172,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E9E55] hover:bg-[#178044] text-white font-bold text-sm shadow-lg transition shrink-0"
           >
             <MessageCircle className="w-4 h-4" />
-            <span>احجز استشارة عبر واتساب</span>
+            <span>{t("احجز استشارة عبر واتساب")}</span>
           </a>
         </div>
 
@@ -187,7 +189,7 @@ export const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
                     ? 'border-[#D4AF37] scale-105 opacity-100'
                     : 'border-transparent opacity-50 hover:opacity-80'
                 }`}
-                aria-label={`عرض صورة ${idx + 1}`}
+                aria-label={`${t('عرض صورة')} ${idx + 1}`}
               >
                 <img src={slide.image} alt="" className="w-full h-full object-cover" />
               </button>

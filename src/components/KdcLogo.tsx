@@ -1,4 +1,5 @@
 import React from 'react';
+import { useT } from '../i18n';
 
 interface KdcLogoProps {
   className?: string;
@@ -11,6 +12,7 @@ export const KdcLogo: React.FC<KdcLogoProps> = ({
   variant = 'gold',
   showText = false,
 }) => {
+  const t = useT();
   const uniqueId = React.useId().replace(/:/g, '');
   const gradId = `kdcGrad_${uniqueId}`;
 
@@ -21,7 +23,7 @@ export const KdcLogo: React.FC<KdcLogoProps> = ({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="h-full w-auto"
-        aria-label="KDC - عيادة الكحلوت للأسنان"
+        aria-label={t("KDC - عيادة الكحلوت للأسنان")}
         role="img"
       >
         <defs>
@@ -81,7 +83,7 @@ export const KdcLogo: React.FC<KdcLogoProps> = ({
       {showText && (
         <div className="text-center mt-1" dir="rtl">
           <div className="text-xs font-extrabold tracking-wide text-[#F3D87D]">
-            عيادة الكحلوت للأسنان
+            {t("عيادة الكحلوت للأسنان")}
           </div>
           <div
             className="text-[10px] font-semibold tracking-[0.18em] text-[#D4AF37]/90 uppercase"

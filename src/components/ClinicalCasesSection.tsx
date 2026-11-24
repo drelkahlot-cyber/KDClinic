@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useT } from '../i18n';
 import { Maximize2, MessageCircle, Sparkles, CheckCircle2, Eye } from 'lucide-react';
 import { CLINICAL_CASES, CLINIC_INFO, buildWhatsAppUrl, ClinicalCaseItem } from '../data/clinicData';
 import { KdcLogo } from './KdcLogo';
@@ -8,6 +9,7 @@ interface ClinicalCasesSectionProps {
 }
 
 export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOpenLightbox }) => {
+  const t = useT();
   const [selectedFocus, setSelectedFocus] = useState<Record<string, 'both' | 'after' | 'before'>>({});
 
   const getFocusMode = (id: string) => selectedFocus[id] || 'both';
@@ -27,23 +29,21 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
         <div>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F5C6E]/10 dark:bg-[#2AA6BE]/15 border border-[#0F5C6E]/20 dark:border-[#2AA6BE]/30 text-[#0F5C6E] dark:text-[#2AA6BE] text-xs font-extrabold mb-2.5">
             <Sparkles className="w-3.5 h-3.5 text-[#C9A227]" />
-            <span>نتائج موثقة داخل العيادة</span>
+            <span>{t("نتائج موثقة داخل العيادة")}</span>
           </div>
           <h2
             id="cases-heading"
             className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-[var(--ink)]"
-          >
-            نتائج حالات حقيقية (قبل وبعد)
-          </h2>
+          >{t("نتائج حالات حقيقية (قبل وبعد)")}</h2>
           <p className="text-sm sm:text-base text-[var(--muted)] mt-1.5 max-w-2xl">
-            نماذج واقعية لحالات تم علاجها وتأهيلها بالكامل في عيادة الكحلوت للأسنان تحت إشراف{' '}
-            <strong className="text-[var(--ink)] font-bold">{CLINIC_INFO.doctorName}</strong>.
+            {t('نماذج واقعية لحالات تم علاجها وتأهيلها بالكامل في عيادة الكحلوت للأسنان تحت إشراف')}{' '}
+            <strong className="text-[var(--ink)] font-bold">{t(CLINIC_INFO.doctorName)}</strong>.
           </p>
         </div>
 
         <div className="text-xs sm:text-sm text-[var(--muted)] flex items-center gap-2 shrink-0 bg-[var(--surface)] px-3.5 py-2 rounded-xl border border-[var(--line)]">
           <Eye className="w-4 h-4 text-[#C9A227]" />
-          <span>اضغط على أي صورة للتكبير بملء الشاشة</span>
+          <span>{t("اضغط على أي صورة للتكبير بملء الشاشة")}</span>
         </div>
       </div>
 
@@ -61,20 +61,20 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
               <div className="px-4 sm:px-6 pt-5 pb-3 text-center relative">
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="px-2.5 py-1 rounded-full bg-white/10 border border-[#D4AF37]/40 text-[#F3D87D] text-[11px] font-bold">
-                    حالة رقم {idx + 1}
+                    {t('حالة رقم')} {idx + 1}
                   </span>
                   <span className="px-3 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-[#F3D87D] text-[11px] font-bold">
-                    {item.category}
+                    {t(item.category)}
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center justify-center my-1">
                   <KdcLogo className="h-10 sm:h-11" variant="gold" />
                   <div className="mt-1 text-xs sm:text-sm font-extrabold text-white tracking-wide">
-                    {CLINIC_INFO.nameAr}
+                    {t(CLINIC_INFO.nameAr)}
                   </div>
                   <div className="mt-1.5 inline-block px-4 py-0.5 rounded-full kdc-gold-pill text-[11px] sm:text-xs font-extrabold text-[#F3D87D]">
-                    د/ عبدالرحمن الكحلوت
+                    {t("د/ عبدالرحمن الكحلوت")}
                   </div>
                 </div>
 
@@ -88,7 +88,7 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
                   onClick={() => onOpenLightbox(idx)}
                   role="button"
                   tabIndex={0}
-                  aria-label={`تكبير صورة ${item.title}`}
+                  aria-label={`${t('تكبير صورة')} ${t(item.title)}`}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
@@ -99,7 +99,7 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
                   <div className="aspect-[3/2] w-full overflow-hidden relative bg-[#08090C]">
                     <img
                       src={item.image}
-                      alt={`${item.title} - قبل وبعد العلاج في عيادة الكحلوت للأسنان`}
+                      alt={`${t(item.title)} - ${t('قبل وبعد العلاج في عيادة الكحلوت للأسنان')}`}
                       loading="lazy"
                       decoding="async"
                       className={`w-full h-full object-cover transition-all duration-500 ${
@@ -114,7 +114,7 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
                     {/* Subtle Top-Right Expand Button */}
                     <span className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/75 backdrop-blur-md border border-[#D4AF37]/50 text-white text-xs font-bold shadow-lg group-hover:bg-[#D4AF37] group-hover:text-black transition">
                       <Maximize2 className="w-3.5 h-3.5" />
-                      <span>تكبير</span>
+                      <span>{t("تكبير")}</span>
                     </span>
                   </div>
 
@@ -134,7 +134,7 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
                       }`}
                     >
                       <span>BEFORE</span>
-                      <span className="text-[10px] opacity-85 font-sans">قبل</span>
+                      <span className="text-[10px] opacity-85 font-sans">{t("قبل")}</span>
                     </button>
 
                     <button
@@ -147,7 +147,7 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
                       }`}
                     >
                       <span>AFTER</span>
-                      <span className="text-[10px] opacity-85 font-sans">بعد</span>
+                      <span className="text-[10px] opacity-85 font-sans">{t("بعد")}</span>
                     </button>
                   </div>
                 </div>
@@ -159,7 +159,7 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
                       onClick={() => setFocusMode(item.id, 'both')}
                       className="text-xs text-[#F3D87D] underline hover:text-white cursor-pointer"
                     >
-                      إعادة عرض الصورتين (قبل وبعد) معاً
+                      {t('إعادة عرض الصورتين (قبل وبعد) معاً')}
                     </button>
                   </div>
                 )}
@@ -169,26 +169,24 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
               <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between">
                 <div>
                   <h3 className="text-base sm:text-lg font-extrabold text-white leading-snug">
-                    {item.title}
+                    {t(item.title)}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-300 mt-1.5 leading-relaxed">
-                    {item.procedureSummary}
+                    {t(item.procedureSummary)}
                   </p>
 
                   {/* Before & After Comparison Notes */}
                   <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mt-3.5 sm:mt-4">
                     <div className="rounded-xl bg-white/[0.04] border border-white/10 p-2 sm:p-2.5">
-                      <span className="text-[10px] sm:text-[11px] font-extrabold text-amber-300/90 block mb-0.5">
-                        الحالة قبل الإجراء:
-                      </span>
-                      <p className="text-[11px] sm:text-xs text-gray-300 leading-relaxed">{item.beforeNote}</p>
+                      <span className="text-[10px] sm:text-[11px] font-extrabold text-amber-300/90 block mb-0.5">{t("الحالة قبل الإجراء:")}</span>
+                      <p className="text-[11px] sm:text-xs text-gray-300 leading-relaxed">{t(item.beforeNote)}</p>
                     </div>
                     <div className="rounded-xl bg-emerald-950/30 border border-emerald-500/30 p-2 sm:p-2.5">
                       <span className="text-[10px] sm:text-[11px] font-extrabold text-emerald-300 flex items-center gap-1 mb-0.5">
                         <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
-                        <span>النتيجة بعد الإجراء:</span>
+                        <span>{t("النتيجة بعد الإجراء:")}</span>
                       </span>
-                      <p className="text-[11px] sm:text-xs text-emerald-100/90 leading-relaxed">{item.afterNote}</p>
+                      <p className="text-[11px] sm:text-xs text-emerald-100/90 leading-relaxed">{t(item.afterNote)}</p>
                     </div>
                   </div>
                 </div>
@@ -200,17 +198,17 @@ export const ClinicalCasesSection: React.FC<ClinicalCasesSectionProps> = ({ onOp
                       {CLINIC_INFO.phonePrimary} | {CLINIC_INFO.phoneWhatsapp}
                     </span>
                     <span className="hidden sm:inline text-[#D4AF37]">•</span>
-                    <span>جسر السويس - التجاريين</span>
+                    <span>{t("جسر السويس - التجاريين")}</span>
                   </div>
 
                   <a
-                    href={buildWhatsAppUrl(item.whatsappInquiry)}
+                    href={buildWhatsAppUrl(t(item.whatsappInquiry))}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1E9E55] hover:bg-[#178044] text-white font-bold text-xs sm:text-sm shadow-md transition shrink-0"
                   >
                     <MessageCircle className="w-4 h-4" />
-                    <span>احجز لحالة مشابهة</span>
+                    <span>{t("احجز لحالة مشابهة")}</span>
                   </a>
                 </div>
               </div>

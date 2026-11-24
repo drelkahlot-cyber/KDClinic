@@ -1,4 +1,5 @@
 import React from 'react';
+import { useT } from '../i18n';
 import {
   Phone,
   MapPin,
@@ -23,6 +24,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenShareModal,
   onOpenClinicLightbox,
 }) => {
+  const t = useT();
   return (
     <section className="pt-4 sm:pt-8 pb-6 sm:pb-10">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start duo-safe-grid">
@@ -36,7 +38,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F5C6E]/10 dark:bg-[#2AA6BE]/15 border border-[#0F5C6E]/20 dark:border-[#2AA6BE]/30 text-[var(--brand)] text-xs sm:text-sm font-extrabold">
                 <Award className="w-4 h-4 text-[#C9A227] shrink-0" />
-                <span>{CLINIC_INFO.doctorName}</span>
+                <span>{t(CLINIC_INFO.doctorName)}</span>
               </div>
 
               <div className="flex items-center gap-2">
@@ -44,47 +46,47 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   type="button"
                   onClick={downloadClinicVCard}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--bg)] hover:bg-[var(--brand)] hover:text-[var(--brand-ink)] border border-[var(--line)] text-xs font-extrabold text-[var(--ink)] transition cursor-pointer"
-                  title="حفظ رقم وعنوان العيادة في جهات الاتصال"
+                  title={t("حفظ رقم وعنوان العيادة في جهات الاتصال")}
                 >
                   <UserPlus className="w-3.5 h-3.5 text-[#C9A227]" />
-                  <span>حفظ الرقم</span>
+                  <span>{t("حفظ الرقم")}</span>
                 </button>
                 <button
                   type="button"
                   onClick={onOpenShareModal}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--bg)] hover:bg-[var(--brand)] hover:text-[var(--brand-ink)] border border-[var(--line)] text-xs font-extrabold text-[var(--ink)] transition cursor-pointer"
-                  title="مشاركة صفحة العيادة"
+                  title={t("مشاركة صفحة العيادة")}
                 >
                   <Share2 className="w-3.5 h-3.5" />
-                  <span>مشاركة</span>
+                  <span>{t("مشاركة")}</span>
                 </button>
               </div>
             </div>
 
             <h1 className="compact-text-scale text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--ink)] tracking-tight leading-[1.25]">
-              {CLINIC_INFO.nameAr}
+              {t(CLINIC_INFO.nameAr)}
             </h1>
 
             <p className="text-base sm:text-xl font-extrabold text-[var(--brand)] mt-2">
-              {CLINIC_INFO.tagline}
+              {t(CLINIC_INFO.tagline)}
             </p>
 
             <div className="mt-4 pt-4 border-t border-[var(--line)] flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm text-[var(--muted)] font-semibold">
               <span className="inline-flex items-center gap-1.5 text-[var(--ink)] font-bold">
                 <span className="w-2 h-2 rounded-full bg-[#1E9E55]" />
-                {CLINIC_INFO.doctorTitle}
+                {t(CLINIC_INFO.doctorTitle)}
               </span>
               <span className="hidden sm:inline text-[var(--line)]">|</span>
               <span className="inline-flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-[#C9A227]" />
-                {CLINIC_INFO.doctorMembership}
+                {t(CLINIC_INFO.doctorMembership)}
               </span>
             </div>
           </div>
 
           {/* Primary Contact & Social Actions Hub + Insurance Banner */}
           <div className="space-y-3">
-            <nav aria-label="طرق التواصل والحجز المباشر" className="space-y-3">
+            <nav aria-label={t("طرق التواصل والحجز المباشر")} className="space-y-3">
               {/* 1. Primary WhatsApp CTA + 2. Direct Phone Call + 3. Vezeeta Online Booking */}
               <div className="grid grid-cols-2 max-[340px]:grid-cols-1 gap-2.5 sm:gap-3">
                 {/* WhatsApp */}
@@ -95,12 +97,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   className="group flex items-center justify-between gap-2 px-3.5 py-3 sm:px-5 sm:py-4 rounded-2xl bg-[#1E9E55] hover:bg-[#178044] text-white shadow-lg shadow-[#1E9E55]/20 transition-all duration-200 hover:-translate-y-0.5 min-h-[64px] sm:min-h-[74px] focus:outline-none focus:ring-3 focus:ring-[#1E9E55]/50"
                 >
                   <div className="min-w-0">
-                    <span className="text-sm sm:text-xl font-black block leading-tight">
-                      احجز على واتساب
-                    </span>
-                    <span className="text-[11px] sm:text-sm font-semibold text-white/90 mt-0.5 block">
-                      رد سريع على استفسارك
-                    </span>
+                    <span className="text-sm sm:text-xl font-black block leading-tight">{t("احجز على واتساب")}</span>
+                    <span className="text-[11px] sm:text-sm font-semibold text-white/90 mt-0.5 block">{t("رد سريع على استفسارك")}</span>
                   </div>
                   <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white/15 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
                     <svg
@@ -120,9 +118,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   className="group flex items-center justify-between gap-2 px-3.5 py-3 sm:px-5 sm:py-4 rounded-2xl bg-[var(--brand)] hover:opacity-95 text-[var(--brand-ink)] shadow-lg shadow-[#0F5C6E]/20 transition-all duration-200 hover:-translate-y-0.5 min-h-[64px] sm:min-h-[74px] focus:outline-none focus:ring-3 focus:ring-[var(--brand)]/50"
                 >
                   <div className="min-w-0">
-                    <span className="text-sm sm:text-xl font-black block leading-tight">
-                      اتصل بالعيادة
-                    </span>
+                    <span className="text-sm sm:text-xl font-black block leading-tight">{t("اتصل بالعيادة")}</span>
                     <span
                       className="text-[11px] sm:text-sm font-num font-extrabold opacity-95 mt-0.5 block"
                       dir="ltr"
@@ -147,12 +143,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       <CalendarCheck className="w-4 h-4 sm:w-6 sm:h-6" />
                     </div>
                     <div className="min-w-0">
-                      <span className="text-sm sm:text-xl font-black block leading-tight">
-                        احجز على فيزيتا
-                      </span>
-                      <span className="text-[11px] sm:text-sm font-semibold text-blue-50 mt-0.5 block leading-snug">
-                        تأكيد فوري وتقييمات المرضى
-                      </span>
+                      <span className="text-sm sm:text-xl font-black block leading-tight">{t("احجز على فيزيتا")}</span>
+                      <span className="text-[11px] sm:text-sm font-semibold text-blue-50 mt-0.5 block leading-snug">{t("تأكيد فوري وتقييمات المرضى")}</span>
                     </div>
                   </div>
 
@@ -181,11 +173,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     <MapPin className="w-6 h-6" />
                   </div>
                   <div>
-                    <span className="text-base sm:text-lg font-extrabold block leading-snug group-hover:text-[var(--brand)] transition-colors">
-                      موقع العيادة على الخريطة
-                    </span>
+                    <span className="text-base sm:text-lg font-extrabold block leading-snug group-hover:text-[var(--brand)] transition-colors">{t("موقع العيادة على الخريطة")}</span>
                     <span className="text-xs sm:text-sm font-semibold text-[var(--muted)] block mt-0.5">
-                      {CLINIC_INFO.addressShort} — {CLINIC_INFO.addressLandmark}
+                      {t(CLINIC_INFO.addressShort)} — {t(CLINIC_INFO.addressLandmark)}
                     </span>
                   </div>
                 </div>
@@ -219,9 +209,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <span className="text-[11px] sm:text-base font-extrabold block leading-tight">
-                        تابعنا على انستجرام
-                      </span>
+                      <span className="text-[11px] sm:text-base font-extrabold block leading-tight">{t("تابعنا على انستجرام")}</span>
                       <span
                         className="text-[9px] sm:text-xs font-num font-semibold text-[var(--muted)] block tracking-tight break-all sm:truncate"
                         dir="ltr"
@@ -252,12 +240,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <span className="text-[11px] sm:text-base font-extrabold block leading-tight">
-                        صفحتنا على فيسبوك
-                      </span>
-                      <span className="text-[9.5px] sm:text-xs font-semibold text-[var(--muted)] block leading-tight mt-0.5">
-                        تابع آخر الأخبار والحالات
-                      </span>
+                      <span className="text-[11px] sm:text-base font-extrabold block leading-tight">{t("صفحتنا على فيسبوك")}</span>
+                      <span className="text-[9.5px] sm:text-xs font-semibold text-[var(--muted)] block leading-tight mt-0.5">{t("تابع آخر الأخبار والحالات")}</span>
                     </div>
                   </div>
                   <ArrowUpLeft className="hidden sm:block w-4 h-4 text-[var(--muted)] group-hover:text-[var(--brand)] shrink-0" />
@@ -268,19 +252,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Medical Insurance & Corporate Contracts Trust Banner */}
             <div
               role="region"
-              aria-label="التأمين الطبي والتعاقدات المعتمدة"
+              aria-label={t("التأمين الطبي والتعاقدات المعتمدة")}
               className="flex items-center gap-3 sm:gap-3.5 px-4 py-3.5 sm:px-5 sm:py-4 rounded-2xl bg-gradient-to-l from-[#0F5C6E]/[0.06] via-[var(--surface)] to-[#C9A227]/[0.10] dark:from-[#2AA6BE]/[0.12] dark:via-[var(--surface)] dark:to-[#D4AF37]/[0.10] border border-[#C9A227]/40 dark:border-[#D4AF37]/35 shadow-[var(--card-shadow)]"
             >
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#C9A227]/15 dark:bg-[#D4AF37]/15 border border-[#C9A227]/35 text-[#9A740C] dark:text-[#F3D87D] flex items-center justify-center shrink-0">
                 <Handshake className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="min-w-0">
-                <span className="text-[11px] sm:text-xs font-extrabold text-[var(--brand)] block leading-tight">
-                  التأمين الطبي والتعاقدات المعتمدة
-                </span>
-                <p className="text-xs sm:text-sm font-extrabold text-[var(--ink)] leading-snug mt-1">
-                  متعاقدون مع جميع شركات التأمين الطبي والهيئات والنقابات الحكومية وقطاع البترول
-                </p>
+                <span className="text-[11px] sm:text-xs font-extrabold text-[var(--brand)] block leading-tight">{t("التأمين الطبي والتعاقدات المعتمدة")}</span>
+                <p className="text-xs sm:text-sm font-extrabold text-[var(--ink)] leading-snug mt-1">{t("متعاقدون مع جميع شركات التأمين الطبي والهيئات والنقابات الحكومية وقطاع البترول")}</p>
               </div>
             </div>
           </div>
@@ -293,17 +273,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="flex items-center gap-2.5">
                 <KdcLogo className="h-8" variant="gold" />
                 <div>
-                  <span className="text-xs font-extrabold text-white block">
-                    عيادة الكحلوت للأسنان
-                  </span>
+                  <span className="text-xs font-extrabold text-white block">{t("عيادة الكحلوت للأسنان")}</span>
                   <span className="text-[10px] text-[#F3D87D] font-num tracking-wider uppercase block">
                     ELKAHLOT DENTAL CLINIC
                   </span>
                 </div>
               </div>
-              <span className="px-2.5 py-1 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 text-[#F3D87D] text-[11px] font-bold">
-                جسر السويس
-              </span>
+              <span className="px-2.5 py-1 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 text-[#F3D87D] text-[11px] font-bold">{t("جسر السويس")}</span>
             </div>
 
             {/* Featured Main Clinic Reception Photo */}
@@ -311,7 +287,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               onClick={() => onOpenClinicLightbox(0)}
               role="button"
               tabIndex={0}
-              aria-label="عرض صور العيادة من الداخل"
+              aria-label={t("عرض صور العيادة من الداخل")}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
@@ -322,18 +298,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             >
               <img
                 src={CLINIC_ROOMS[0].image}
-                alt="استقبال عيادة الكحلوت للأسنان"
+                alt={t("استقبال عيادة الكحلوت للأسنان")}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
               <div className="absolute bottom-3 right-3 left-3 flex items-end justify-between gap-2">
                 <div>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#D4AF37] text-black text-[10px] font-extrabold">
-                    العيادة من الداخل
-                  </span>
-                  <h2 className="text-sm sm:text-base font-extrabold text-white mt-1">
-                    تجهيزات حديثة وبيئة طبية متكاملة
-                  </h2>
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#D4AF37] text-black text-[10px] font-extrabold">{t("العيادة من الداخل")}</span>
+                  <h2 className="text-sm sm:text-base font-extrabold text-white mt-1">{t("تجهيزات حديثة وبيئة طبية متكاملة")}</h2>
                 </div>
               </div>
             </div>
@@ -346,11 +318,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   type="button"
                   onClick={() => onOpenClinicLightbox(roomIdx)}
                   className="relative aspect-[4/3] rounded-xl overflow-hidden border border-white/15 hover:border-[#D4AF37] group cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-                  aria-label={`عرض ${CLINIC_ROOMS[roomIdx].title}`}
+                  aria-label={`${t('عرض')} ${t(CLINIC_ROOMS[roomIdx].title)}`}
                 >
                   <img
                     src={CLINIC_ROOMS[roomIdx].image}
-                    alt={CLINIC_ROOMS[roomIdx].title}
+                    alt={t(CLINIC_ROOMS[roomIdx].title)}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black/25 group-hover:bg-transparent transition" />
@@ -365,14 +337,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl kdc-gold-pill text-[#F3D87D] hover:bg-[#D4AF37] hover:text-black text-xs font-extrabold transition"
               >
                 <Sparkles className="w-3.5 h-3.5 shrink-0" />
-                <span>نتائج الحالات (٤)</span>
+                <span>{t("نتائج الحالات (٤)")}</span>
               </a>
               <a
                 href="#clinic-tour"
                 className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-extrabold transition"
               >
                 <Images className="w-3.5 h-3.5 text-[#F3D87D] shrink-0" />
-                <span>صور العيادة (٦)</span>
+                <span>{t("صور العيادة (٦)")}</span>
               </a>
             </div>
           </div>
