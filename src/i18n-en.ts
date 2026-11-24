@@ -200,7 +200,7 @@ export const EN: Record<string, string> = {
   "٦٤ شارع عبدالعزيز حجازي، التجاريين، جسر السويس، بجوار محطة مترو الهايكستب - القاهرة": "64 Abdel Aziz Hegazy St., El Togareen, Gesr El Suez, next to Haykestep Metro Station - Cairo",
   "مواعيد العمل": "Opening hours",
   "السبت - الخميس": "Saturday - Thursday",
-  "3:00 عصراً - 10:00 مساءً": "3:00 PM - 10:00 PM",
+  "2:00 ظهراً - 10:00 مساءً": "2:00 PM - 10:00 PM",
   "الجمعة: إجازة": "Friday: closed",
   "تقييمات حقيقية على جوجل": "Real patient reviews",
   "آراء مرضانا": "What Our Patients Say",
