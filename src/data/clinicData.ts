@@ -298,9 +298,9 @@ export const FAQ_LIST: FaqItem[] = [
   },
   {
     id: 'doctor',
-    question: 'من هو الطبيب المعالج في العيادة؟',
+    question: 'من يعمل في العيادة؟',
     answer:
-      'د. عبدالرحمن الكحلوت، أخصائي جراحة وزراعة وتجميل الأسنان وعضو الجمعية المصرية لزراعة الأسنان.',
+      'يعمل في العيادة د. عبدالرحمن الكحلوت، أخصائي جراحة وزراعة وتجميل الأسنان وعضو الجمعية المصرية لزراعة الأسنان، ومعه مجموعة من الأخصائيين في كل تخصصات طب الأسنان.',
   },
   {
     id: 'metro',
@@ -322,7 +322,19 @@ export interface PatientReview {
   id: string;
   author: string;
   text: string;
+  source: 'google' | 'vezeeta' | 'clinido';
 }
+
+// Overall ratings on each booking/review platform, as shown on their pages
+// on the date below. Update the numbers and date together.
+export const REVIEW_PLATFORMS = {
+  checkedOn: 'نوفمبر 2026',
+  google: { rating: '4.6', count: 10 },
+  vezeeta: { rating: '4.5', count: 12 },
+  clinido: { rating: '5.0', count: 2 },
+} as const;
+
+export const CLINIDO_URL = 'https://clinido.com/ar/drprofile/1371111/35334';
 
 // Real patient reviews, quoted word for word from the clinic's Google Maps
 // listing (first name + initial only). Add new ones the same way; never edit
@@ -330,12 +342,44 @@ export interface PatientReview {
 export const PATIENT_REVIEWS: PatientReview[] = [
   {
     id: 'review-wael',
+    source: 'google',
     author: 'وائل ي.',
     text: 'تجربة فوق الممتازة بعد معاناة اربع سنوات مع اسناني، دكتور صاحب خبرة ومواكب لكل جديد من خلال استخدام الاجهزة الحديثة الخاصة بطب الأسنان والأهم انه باله طويل وبيوضح تماما خطوات العلاج الى جانب انه الاسعار معقولة جدا بالمقارنة مع تجارب سابقة. بارك الله في علمك وعملك دكتور والشكر موصول ايضا لطاقم العيادة',
   },
   {
     id: 'review-reeman',
+    source: 'google',
     author: 'ريمان ع.',
     text: 'نظافة ، تعقيم ، حسن تعامل ، شطااارة ومراعاة من الدكتور ربنا يبارك له',
+  },
+  {
+    id: 'review-basma',
+    source: 'google',
+    author: 'بسمة أ.',
+    text: 'دكتور ممتاااز والله والعيادة نضيفة واسعاره كويسة جدا والمعاملة ممتازة',
+  },
+  {
+    id: 'review-mohanad',
+    source: 'google',
+    author: 'مهند أ.',
+    text: 'ممتاز وشاطر وامين',
+  },
+  {
+    id: 'review-menna',
+    source: 'google',
+    author: 'منة أ.',
+    text: 'خدمة ممتازة ودكتور شاطر♥️',
+  },
+  {
+    id: 'review-maha-clinido',
+    source: 'clinido',
+    author: 'مها ح.',
+    text: 'دكتور ممتاز',
+  },
+  {
+    id: 'review-mohamed-vezeeta',
+    source: 'vezeeta',
+    author: 'محمد ع.',
+    text: 'دكتور كويس',
   },
 ];
