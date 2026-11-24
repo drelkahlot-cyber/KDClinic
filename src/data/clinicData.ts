@@ -62,6 +62,8 @@ export const CLINIC_INFO = {
   facebookUrl: 'https://www.facebook.com/share/1DzCcQCesE/',
   // Opens Google's "write a review" box for the clinic's verified Maps listing.
   googleReviewUrl: 'https://g.page/r/CXXIEn5cQ4pEEBM/review',
+  // Public Google Maps listing (reviews tab opens from here).
+  googleListingUrl: 'https://www.google.com/maps?cid=4938834005896382581',
   vezeetaUrl:
     'https://www.vezeeta.com/ar/dr/%D8%AF%D9%83%D8%AA%D9%88%D8%B1-%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B1%D8%AD%D9%85%D9%86-%D8%A7%D9%84%D9%83%D8%AD%D9%84%D9%88%D8%AA-%D8%A7%D8%B3%D9%86%D8%A7%D9%86',
 } as const;
@@ -305,5 +307,35 @@ export const FAQ_LIST: FaqItem[] = [
     question: 'هل العيادة قريبة من المترو؟',
     answer:
       'نعم، العيادة بجوار محطة مترو الهايكستب في جسر السويس، فالوصول إليها سهل بالمترو.',
+  },
+];
+
+// Opening hours, same as the clinic's Google Business Profile. Keep in sync
+// with "openingHoursSpecification" in index.html.
+export const OPENING_HOURS = {
+  days: 'السبت - الخميس',
+  time: '2:00 ظهراً - 10:00 مساءً',
+  closed: 'الجمعة: إجازة',
+} as const;
+
+export interface PatientReview {
+  id: string;
+  author: string;
+  text: string;
+}
+
+// Real patient reviews, quoted word for word from the clinic's Google Maps
+// listing (first name + initial only). Add new ones the same way; never edit
+// or invent review text.
+export const PATIENT_REVIEWS: PatientReview[] = [
+  {
+    id: 'review-wael',
+    author: 'وائل ي.',
+    text: 'تجربة فوق الممتازة بعد معاناة اربع سنوات مع اسناني، دكتور صاحب خبرة ومواكب لكل جديد من خلال استخدام الاجهزة الحديثة الخاصة بطب الأسنان والأهم انه باله طويل وبيوضح تماما خطوات العلاج الى جانب انه الاسعار معقولة جدا بالمقارنة مع تجارب سابقة. بارك الله في علمك وعملك دكتور والشكر موصول ايضا لطاقم العيادة',
+  },
+  {
+    id: 'review-reeman',
+    author: 'ريمان ع.',
+    text: 'نظافة ، تعقيم ، حسن تعامل ، شطااارة ومراعاة من الدكتور ربنا يبارك له',
   },
 ];

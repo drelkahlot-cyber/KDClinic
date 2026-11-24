@@ -102,6 +102,8 @@ const enHtml = buildPage('en');
 // Arabic on purpose (structured-data address, WhatsApp default message URL).
 const enBody = enHtml.split('<div id="root">')[1].split('</body>')[0]
   .replace(/<script[\s\S]*?<\/script>/g, '')
+  // Patient reviews are quoted in their original Arabic on purpose.
+  .replace(/<blockquote[^>]*lang="ar"[\s\S]*?<\/blockquote>/g, '')
   .replace(/href="[^"]*"/g, '');
 const leftovers = [...new Set(enBody.match(/[^<>"]*[؀-ۿ][^<>"]*/g) || [])]
   .map((s) => s.trim())

@@ -11,8 +11,9 @@ import {
   ShieldCheck,
   UserCheck,
   Handshake,
+  Clock,
 } from 'lucide-react';
-import { CLINIC_INFO } from '../data/clinicData';
+import { CLINIC_INFO, OPENING_HOURS } from '../data/clinicData';
 import { KdcLogo } from './KdcLogo';
 
 export const DoctorAndLocationSection: React.FC = () => {
@@ -174,6 +175,20 @@ export const DoctorAndLocationSection: React.FC = () => {
                     </>
                   )}
                 </button>
+              </div>
+            </div>
+
+            {/* Opening Hours Box */}
+            <div className="mt-4 rounded-2xl bg-[var(--bg)] border border-[var(--line)] p-4 sm:p-5 flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#C9A227]/15 border border-[#C9A227]/35 text-[#9A740C] dark:text-[#F3D87D] flex items-center justify-center shrink-0 mt-0.5">
+                <Clock className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-[var(--muted)]">{t("مواعيد العمل")}</h3>
+                <p className="text-base sm:text-lg font-extrabold text-[var(--ink)] leading-snug mt-0.5">
+                  {t(OPENING_HOURS.days)}: <span className="font-num">{t(OPENING_HOURS.time)}</span>
+                </p>
+                <p className="text-sm font-bold text-[var(--brand)] mt-1">{t(OPENING_HOURS.closed)}</p>
               </div>
             </div>
 

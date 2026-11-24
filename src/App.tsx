@@ -24,6 +24,7 @@ import { DoctorAndLocationSection } from './components/DoctorAndLocationSection'
 import { ImageLightboxModal, LightboxSlide } from './components/ImageLightboxModal';
 import { QrShareModal } from './components/QrShareModal';
 import { FaqSection } from './components/FaqSection';
+import { ReviewsSection } from './components/ReviewsSection';
 import { LangProvider, useLang, useT, otherLangHref, type Lang } from './i18n';
 
 /** Page shell: provides the page language (Arabic at /, English at /en/). */
@@ -118,7 +119,7 @@ function ClinicPage() {
         <div className="ultrawide-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
           {/* Brand Logo & Name */}
           <a
-            href="#"
+            href={lang === 'en' ? '/en/' : '/'}
             className="flex items-center gap-3 group focus:outline-none"
             aria-label={t(CLINIC_INFO.nameAr)}
           >
@@ -236,7 +237,10 @@ function ClinicPage() {
         {/* 5. Doctor Credentials & Clinic Location */}
         <DoctorAndLocationSection />
 
-        {/* 6. Frequently Asked Questions (also published as FAQPage schema) */}
+        {/* 6. Real patient reviews from Google */}
+        <ReviewsSection />
+
+        {/* 7. Frequently Asked Questions (also published as FAQPage schema) */}
         <FaqSection />
       </main>
 
