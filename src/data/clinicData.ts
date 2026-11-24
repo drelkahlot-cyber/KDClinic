@@ -314,7 +314,7 @@ export const FAQ_LIST: FaqItem[] = [
 // with "openingHoursSpecification" in index.html.
 export const OPENING_HOURS = {
   days: 'السبت - الخميس',
-  time: '2:00 ظهراً - 10:00 مساءً',
+  time: '3:00 عصراً - 10:00 مساءً',
   closed: 'الجمعة: إجازة',
 } as const;
 
