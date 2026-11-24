@@ -16,4 +16,46 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.kahlotdental.com/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.kahlotdental.com/en/" />
   </url>
+  <url>
+    <loc>https://www.kahlotdental.com/services/dental-implants/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kahlotdental.com/services/hollywood-smile/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kahlotdental.com/services/root-canal/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kahlotdental.com/services/wisdom-tooth-extraction/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kahlotdental.com/services/orthodontics/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kahlotdental.com/services/kids-dentistry/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kahlotdental.com/services/teeth-cleaning-gum-treatment/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

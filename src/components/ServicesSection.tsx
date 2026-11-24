@@ -1,5 +1,6 @@
 import React from 'react';
-import { useT } from '../i18n';
+import { useT, useLang } from '../i18n';
+import { SERVICE_PAGES, servicePath } from '../data/servicePages';
 import { MessageCircle, ArrowUpLeft, Stethoscope } from 'lucide-react';
 import { SERVICES_LIST, buildWhatsAppUrl, ServiceItem } from '../data/clinicData';
 
@@ -52,6 +53,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
 
 export const ServicesSection: React.FC = () => {
   const t = useT();
+  const lang = useLang();
   return (
     <section
       id="services"
@@ -124,6 +126,25 @@ export const ServicesSection: React.FC = () => {
           );
         })}
       </div>
+
+      {/* Links to each service's own page (Arabic site only) */}
+      {lang === 'ar' && (
+        <nav aria-label="صفحات الخدمات" className="mt-5 sm:mt-6">
+          <h3 className="text-sm sm:text-base font-extrabold text-[var(--ink)] mb-2.5">اعرف تفاصيل أكتر عن:</h3>
+          <div className="flex flex-wrap gap-2">
+            {SERVICE_PAGES.map((p) => (
+              <a
+                key={p.slug}
+                href={servicePath(p.slug)}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--surface)] border border-[var(--line)] hover:border-[var(--brand)] text-xs sm:text-sm font-bold text-[var(--ink)] transition"
+              >
+                <span>{p.h1.replace(' في جسر السويس', '')}</span>
+                <ArrowUpLeft className="w-3.5 h-3.5" />
+              </a>
+            ))}
+          </div>
+        </nav>
+      )}
     </section>
   );
 };

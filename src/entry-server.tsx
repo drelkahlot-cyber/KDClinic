@@ -9,8 +9,9 @@ import { translate, type Lang } from './i18n';
  * dist/en/index.html (English) so search engines and link-preview bots see the
  * real content without running JS.
  */
-export function render(lang: Lang): string {
-  return renderToString(<App lang={lang} />);
+export function render(lang: Lang, servicePage?: string): string {
+  return renderToString(<App lang={lang} servicePage={servicePage} />);
 }
 
 export { CLINIC_INFO, SERVICES_LIST, FAQ_LIST, translate };
+export { SERVICE_PAGES } from './data/servicePages';

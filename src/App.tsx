@@ -26,17 +26,26 @@ import { QrShareModal } from './components/QrShareModal';
 import { FaqSection } from './components/FaqSection';
 import { ReviewsSection } from './components/ReviewsSection';
 import { LangProvider, useLang, useT, otherLangHref, type Lang } from './i18n';
+import { ServicePage } from './components/ServicePage';
+import { findServicePage } from './data/servicePages';
 
-/** Page shell: provides the page language (Arabic at /, English at /en/). */
-export function App({ lang = 'ar' }: { lang?: Lang }) {
+/**
+ * Page shell: provides the page language (Arabic at /, English at /en/).
+ * With `servicePage` set it renders that service's landing page
+ * (/services/<slug>/, Arabic) inside the same header, footer and action bar.
+ */
+export function App({ lang = 'ar', servicePage }: { lang?: Lang; servicePage?: string }) {
   return (
     <LangProvider value={lang}>
-      <ClinicPage />
+      <ClinicPage servicePage={servicePage} />
     </LangProvider>
   );
 }
 
-function ClinicPage() {
+function ClinicPage({ servicePage }: { servicePage?: string }) {
+  const service = findServicePage(servicePage);
+  // Section links in the header point back to the homepage from a service page.
+  const homeAnchor = service ? '/' : '';
   const lang = useLang();
   const t = useT();
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -142,19 +151,19 @@ function ClinicPage() {
             className="hidden lg:flex items-center gap-1 xl:gap-2 text-sm font-extrabold text-[var(--muted)]"
           >
             <a
-              href="#cases"
+              href={`${homeAnchor}#cases`}
               className="px-3.5 py-2 rounded-xl hover:bg-[var(--bg)] hover:text-[var(--brand)] transition"
             >{t("نتائج حالات حقيقية")}</a>
             <a
-              href="#clinic-tour"
+              href={`${homeAnchor}#clinic-tour`}
               className="px-3.5 py-2 rounded-xl hover:bg-[var(--bg)] hover:text-[var(--brand)] transition"
             >{t("العيادة من الداخل")}</a>
             <a
-              href="#services"
+              href={`${homeAnchor}#services`}
               className="px-3.5 py-2 rounded-xl hover:bg-[var(--bg)] hover:text-[var(--brand)] transition"
             >{t("الخدمات العلاجية")}</a>
             <a
-              href="#about-location"
+              href={`${homeAnchor}#about-location`}
               className="px-3.5 py-2 rounded-xl hover:bg-[var(--bg)] hover:text-[var(--brand)] transition"
             >{t("عن الدكتور والموقع")}</a>
           </nav>
@@ -215,6 +224,10 @@ function ClinicPage() {
 
       {/* Main Content Container */}
       <main className="flex-1 ultrawide-container max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+        {service ? (
+          <ServicePage page={service} />
+        ) : (
+        <>
         {/* 1. Hero & Quick-Action Hub */}
         <HeroSection
           onOpenShareModal={() => setIsShareModalOpen(true)}
@@ -242,6 +255,8 @@ function ClinicPage() {
 
         {/* 7. Frequently Asked Questions (also published as FAQPage schema) */}
         <FaqSection />
+        </>
+        )}
       </main>
 
       {/* Official Clinic Footer */}

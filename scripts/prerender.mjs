@@ -21,7 +21,7 @@ const ssrDir = path.join(root, 'dist-ssr');
 const ssrEntry = fs.readdirSync(ssrDir).find((f) => /^entry-server\.(m?js)$/.test(f));
 if (!ssrEntry) throw new Error('prerender: SSR bundle not found in dist-ssr/');
 
-const { render, SERVICES_LIST, FAQ_LIST, translate } = await import(
+const { render, SERVICES_LIST, FAQ_LIST, SERVICE_PAGES, translate } = await import(
   pathToFileURL(path.join(ssrDir, ssrEntry)).href
 );
 
@@ -65,6 +65,52 @@ function buildPage(lang) {
   );
 
   if (lang === 'en') html = toEnglishHead(html);
+  return html;
+}
+
+const escAttr = (v) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+// One Arabic landing page per service at /services/<slug>/. Own title,
+// description, canonical and social cards, plus FAQPage and BreadcrumbList
+// structured data built from src/data/servicePages.ts.
+function buildServicePage(p) {
+  const url = `${SITE}/services/${p.slug}/`;
+  let html = template;
+  html = html.replace('<div id="root"></div>', `<div id="root">${render('ar', p.slug)}</div>`);
+  const services = SERVICES_LIST.map((s) => ({ '@type': 'MedicalProcedure', name: s.title, description: s.subtitle }));
+  html = html.replace('__SERVICES_JSON__', JSON.stringify(services));
+
+  const set = (re, value) => {
+    if (!re.test(html)) throw new Error(`prerender(${p.slug}): head tag not found: ${re}`);
+    html = html.replace(re, (m, before) => `${before}${escAttr(value)}"`);
+  };
+  html = html.replace(/<title>[^<]*<\/title>/, `<title>${escAttr(p.metaTitle)}</title>`);
+  set(/(<meta name="description"\s+content=")[^"]*"/, p.metaDescription);
+  set(/(<link rel="canonical" href=")[^"]*"/, url);
+  set(/(<meta property="og:url" content=")[^"]*"/, url);
+  set(/(<meta property="og:title" content=")[^"]*"/, p.metaTitle);
+  set(/(<meta property="og:description"\s+content=")[^"]*"/, p.metaDescription);
+  set(/(<meta name="twitter:title" content=")[^"]*"/, p.metaTitle);
+  set(/(<meta name="twitter:description"\s+content=")[^"]*"/, p.metaDescription);
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: 'ar',
+    mainEntity: p.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  };
+  const crumbsLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'عيادة الكحلوت للأسنان', item: `${SITE}/` },
+      { '@type': 'ListItem', position: 2, name: p.h1, item: url },
+    ],
+  };
+  html = html.replace(
+    '</head>',
+    `  <script type="application/ld+json">${JSON.stringify(faqLd)}</script>\n  <script type="application/ld+json">${JSON.stringify(crumbsLd)}</script>\n</head>`
+  );
   return html;
 }
 
@@ -115,5 +161,12 @@ if (leftovers.length) {
 fs.writeFileSync(htmlPath, arHtml);
 fs.mkdirSync(path.join(distDir, 'en'), { recursive: true });
 fs.writeFileSync(path.join(distDir, 'en', 'index.html'), enHtml);
+for (const p of SERVICE_PAGES) {
+  const dir = path.join(distDir, 'services', p.slug);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), buildServicePage(p));
+}
+console.log(`prerender: wrote ${SERVICE_PAGES.length} service pages under dist/services/`);
+
 fs.rmSync(ssrDir, { recursive: true, force: true });
 console.log('prerender: wrote dist/index.html (ar) and dist/en/index.html (en)');
