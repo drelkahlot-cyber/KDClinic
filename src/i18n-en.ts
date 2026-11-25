@@ -224,6 +224,8 @@ export const EN: Record<string, string> = {
   "تقييمات حقيقية من مرضانا": "Real patient reviews",
   "المناطق اللي بنخدمها": "Areas we serve",
   "العيادة قريبة من مرضانا في:": "The clinic is close to patients in:",
+  "وبيجيلنا مرضى من كل محافظات مصر، ومرضى من خارج مصر من دول كتير حوالين العالم.":
+    "We also welcome patients from every governorate in Egypt, and international patients from many countries around the world.",
   "التجاريين": "El Togareen",
   "شارع جمال عبدالناصر": "Gamal Abdel Nasser St.",
   "مدينة قباء": "Qubaa City",
