@@ -229,4 +229,7 @@ export const EN: Record<string, string> = {
   "مدينة قباء": "Qubaa City",
   "مدينة السلام": "El Salam City",
   "الهايكستب": "Haykestep",
+  "شيراتون": "Sheraton",
+  "مدينة نصر": "Nasr City",
+  "مدينة العبور": "El Obour City",
 };
