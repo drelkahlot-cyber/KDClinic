@@ -424,6 +424,51 @@ export const AREA_PAGES: ServicePageData[] = [
   },
 ];
 
+/**
+ * "Dental implants in <area>" pages (/areas/dental-implants-<area>/): the
+ * service people search for most, combined with each area's directions.
+ */
+const IMPLANT_AREAS: { area: string; name: string; short: string }[] = [
+  { area: 'nasr-city', name: 'مدينة نصر', short: 'مدينة نصر' },
+  { area: 'sheraton', name: 'شيراتون', short: 'شيراتون' },
+  { area: 'obour', name: 'مدينة العبور', short: 'العبور' },
+];
+for (const { area, name, short } of IMPLANT_AREAS) {
+  const base = AREA_PAGES.find((p) => p.slug === area)!;
+  AREA_PAGES.push({
+    section: 'areas',
+    slug: `dental-implants-${area}`,
+    serviceId: 'implants',
+    h1: `زراعة الأسنان قريب من ${name}`,
+    metaTitle: `زراعة أسنان قريب من ${name} | عيادة الكحلوت للأسنان - د. عبدالرحمن الكحلوت`,
+    metaDescription: `زراعة الأسنان لمرضى ${name} في عيادة الكحلوت للأسنان بجسر السويس بجوار مترو الهايكستب، مع د. عبدالرحمن الكحلوت أخصائي جراحة وزراعة الأسنان وعضو الجمعية المصرية لزراعة الأسنان. احجز بالواتساب.`,
+    intro: [
+      `لو من ${name} وعندك سن أو أكتر مفقودين، زراعة الأسنان بتعوّضهم بغرسة تيتانيوم تتثبت في عظم الفك وعليها تاج بشكل ولون قريب من السن الطبيعي.`,
+      'في عيادة الكحلوت للأسنان بجسر السويس، بجوار محطة مترو الهايكستب، يتابع حالات الزراعة د. عبدالرحمن الكحلوت، أخصائي جراحة وزراعة الأسنان وعضو الجمعية المصرية لزراعة الأسنان، من أول الكشف والأشعة لحد تركيب السن النهائي.',
+    ],
+    whenTitle: 'إمتى ممكن تحتاج زراعة أسنان؟',
+    when: [
+      'سن أو أكتر مفقودين وعايز تعويض ثابت.',
+      'الطقم المتحرك مضايقك أو مش ثابت.',
+      'عايز تحافظ على الأسنان اللي جنب الفراغ من غير ما تتبرد لكوبري.',
+      'خطة العلاج المناسبة بيحددها الدكتور بعد الكشف والأشعة.',
+    ],
+    stepsTitle: `إزاي توصل للعيادة من ${short}`,
+    steps: base.steps,
+    faqs: [
+      {
+        q: 'الزراعة بتاخد قد إيه؟',
+        a: 'المدة بتختلف من حالة للتانية حسب حالة العظم ونوع الزراعة، والدكتور بيشرح لك الخطة والمدة بعد الكشف والأشعة.',
+      },
+      {
+        q: `العيادة فين بالنسبة لـ${short}؟`,
+        a: 'العيادة في ٦٤ شارع عبدالعزيز حجازي، التجاريين، جسر السويس، بجوار محطة مترو الهايكستب على الخط التالت.',
+      },
+      BOOK_FAQ,
+    ],
+  });
+}
+
 /** Every landing page (services + areas), e.g. for prerendering. */
 export const LANDING_PAGES: ServicePageData[] = [...SERVICE_PAGES, ...AREA_PAGES];
 
