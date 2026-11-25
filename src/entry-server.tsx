@@ -14,4 +14,4 @@ export function render(lang: Lang, servicePage?: string): string {
 }
 
 export { CLINIC_INFO, SERVICES_LIST, FAQ_LIST, translate };
-export { SERVICE_PAGES } from './data/servicePages';
+export { SERVICE_PAGES, LANDING_PAGES } from './data/servicePages';

@@ -59,6 +59,10 @@
       "destination": "/services/:slug/index.html"
     },
     {
+      "source": "/areas/:slug",
+      "destination": "/areas/:slug/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

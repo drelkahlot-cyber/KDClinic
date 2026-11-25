@@ -1,3 +1,4 @@
+import { AREA_PAGE_BY_NAME, servicePath } from '../data/servicePages';
 import React, { useState } from 'react';
 import { useT } from '../i18n';
 import {
@@ -185,14 +186,25 @@ export const DoctorAndLocationSection: React.FC = () => {
                 {t("العيادة قريبة من مرضانا في:")}
               </p>
               <ul className="mt-2.5 flex flex-wrap gap-2">
-                {SERVED_AREAS.map((area) => (
-                  <li
-                    key={area}
-                    className="px-3 py-1.5 rounded-xl bg-[var(--surface)] border border-[var(--line)] text-xs sm:text-sm font-bold text-[var(--ink)]"
-                  >
-                    {t(area)}
-                  </li>
-                ))}
+                {SERVED_AREAS.map((area) => {
+                  const areaSlug = AREA_PAGE_BY_NAME[area];
+                  const cls =
+                    "block px-3 py-1.5 rounded-xl bg-[var(--surface)] border border-[var(--line)] text-xs sm:text-sm font-bold text-[var(--ink)]";
+                  return (
+                    <li key={area}>
+                      {areaSlug ? (
+                        <a
+                          href={servicePath(areaSlug)}
+                          className={cls + " hover:border-[var(--brand)] hover:text-[var(--brand)] underline underline-offset-4 decoration-[var(--line)] transition"}
+                        >
+                          {t(area)}
+                        </a>
+                      ) : (
+                        <span className={cls}>{t(area)}</span>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 

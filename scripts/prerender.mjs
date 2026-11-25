@@ -21,7 +21,7 @@ const ssrDir = path.join(root, 'dist-ssr');
 const ssrEntry = fs.readdirSync(ssrDir).find((f) => /^entry-server\.(m?js)$/.test(f));
 if (!ssrEntry) throw new Error('prerender: SSR bundle not found in dist-ssr/');
 
-const { render, SERVICES_LIST, FAQ_LIST, SERVICE_PAGES, translate } = await import(
+const { render, SERVICES_LIST, FAQ_LIST, LANDING_PAGES, translate } = await import(
   pathToFileURL(path.join(ssrDir, ssrEntry)).href
 );
 
@@ -74,7 +74,7 @@ const escAttr = (v) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(
 // description, canonical and social cards, plus FAQPage and BreadcrumbList
 // structured data built from src/data/servicePages.ts.
 function buildServicePage(p) {
-  const url = `${SITE}/services/${p.slug}/`;
+  const url = `${SITE}/${p.section ?? 'services'}/${p.slug}/`;
   let html = template;
   html = html.replace('<div id="root"></div>', `<div id="root">${render('ar', p.slug)}</div>`);
   const services = SERVICES_LIST.map((s) => ({ '@type': 'MedicalProcedure', name: s.title, description: s.subtitle }));
@@ -161,12 +161,12 @@ if (leftovers.length) {
 fs.writeFileSync(htmlPath, arHtml);
 fs.mkdirSync(path.join(distDir, 'en'), { recursive: true });
 fs.writeFileSync(path.join(distDir, 'en', 'index.html'), enHtml);
-for (const p of SERVICE_PAGES) {
-  const dir = path.join(distDir, 'services', p.slug);
+for (const p of LANDING_PAGES) {
+  const dir = path.join(distDir, p.section ?? 'services', p.slug);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), buildServicePage(p));
 }
-console.log(`prerender: wrote ${SERVICE_PAGES.length} service pages under dist/services/`);
+console.log(`prerender: wrote ${LANDING_PAGES.length} landing pages under dist/services/ and dist/areas/`);
 
 fs.rmSync(ssrDir, { recursive: true, force: true });
 console.log('prerender: wrote dist/index.html (ar) and dist/en/index.html (en)');

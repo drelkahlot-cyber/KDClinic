@@ -21,6 +21,8 @@ export interface ServicePageCase {
 }
 
 export interface ServicePageData {
+  /** URL section: /services/<slug>/ (default) or /areas/<slug>/ */
+  section?: 'services' | 'areas';
   slug: string;
   /** id in SERVICES_LIST, used for the WhatsApp message */
   serviceId: string;
@@ -30,6 +32,8 @@ export interface ServicePageData {
   intro: string[];
   whenTitle: string;
   when: string[];
+  /** Heading above `steps`; defaults to "خطوات العلاج في العيادة" */
+  stepsTitle?: string;
   steps: string[];
   faqs: ServicePageFaq[];
   relatedCase?: ServicePageCase;
@@ -293,15 +297,156 @@ export const SERVICE_PAGES: ServicePageData[] = [
   },
 ];
 
+const BOOK_FAQ: ServicePageFaq = {
+  q: 'أحجز إزاي؟',
+  a: 'برسالة واتساب على 01006641810 أو بالاتصال على 01019616260 أو من فيزيتا.',
+};
+const SERVICES_FAQ: ServicePageFaq = {
+  q: 'إيه الخدمات اللي في العيادة؟',
+  a: 'زراعة الأسنان، تجميل الأسنان وابتسامة هوليود، علاج العصب، خلع ضرس العقل والجراحة، تقويم الأسنان، أسنان الأطفال، وتنظيف الجير وعلاج اللثة. خطة العلاج بيحددها الدكتور بعد الكشف.',
+};
+const MAPS_STEP = 'افتح موقع العيادة على خرائط جوجل من زر "موقع العيادة" عشان تعرف أنسب طريق من مكانك.';
+const BOOK_STEP = 'ابعت واتساب قبل ما تيجي عشان نحجز لك ميعاد.';
+
+/**
+ * One landing page per nearby area at /areas/<slug>/ (Arabic), for searches
+ * like "دكتور اسنان مدينة نصر". Directions stay general (Metro Line 3 to
+ * Haykestep, the Ring Road): no made-up travel times or distances.
+ */
+export const AREA_PAGES: ServicePageData[] = [
+  {
+    section: 'areas',
+    slug: 'nasr-city',
+    serviceId: 'consultation',
+    h1: 'دكتور أسنان قريب من مدينة نصر',
+    metaTitle: 'دكتور أسنان قريب من مدينة نصر | عيادة الكحلوت للأسنان - جسر السويس',
+    metaDescription:
+      'عيادة الكحلوت للأسنان في جسر السويس بجوار مترو الهايكستب، قريبة من مدينة نصر. د. عبدالرحمن الكحلوت أخصائي جراحة وزراعة وتجميل الأسنان. احجز بالواتساب أو التليفون.',
+    intro: [
+      'لو ساكن أو شغال في مدينة نصر ومحتاج دكتور أسنان، عيادة الكحلوت للأسنان في جسر السويس بجوار محطة مترو الهايكستب، والوصول ليها سهل بالمترو أو بالعربية.',
+      'في العيادة د. عبدالرحمن الكحلوت، أخصائي جراحة وزراعة وتجميل الأسنان، وبنقدم الكشف وكل خدمات الأسنان الأساسية في مكان واحد.',
+    ],
+    whenTitle: 'خدمات العيادة لمرضى مدينة نصر',
+    when: [
+      'زراعة الأسنان وتعويض الأسنان المفقودة.',
+      'تجميل الأسنان وابتسامة هوليود.',
+      'علاج العصب وحشو الأسنان.',
+      'خلع ضرس العقل والجراحة.',
+      'تقويم الأسنان وأسنان الأطفال.',
+    ],
+    stepsTitle: 'إزاي توصل للعيادة من مدينة نصر',
+    steps: [
+      'بالمترو: اركب الخط التالت وانزل محطة الهايكستب، والعيادة جنب المحطة.',
+      'بالعربية: اتجه ناحية جسر السويس والتجاريين، والعنوان ٦٤ شارع عبدالعزيز حجازي.',
+      MAPS_STEP,
+      BOOK_STEP,
+    ],
+    faqs: [
+      {
+        q: 'العيادة فين بالظبط بالنسبة لمدينة نصر؟',
+        a: 'العيادة في ٦٤ شارع عبدالعزيز حجازي، التجاريين، جسر السويس، بجوار محطة مترو الهايكستب على الخط التالت.',
+      },
+      SERVICES_FAQ,
+      BOOK_FAQ,
+    ],
+  },
+  {
+    section: 'areas',
+    slug: 'sheraton',
+    serviceId: 'consultation',
+    h1: 'دكتور أسنان قريب من شيراتون',
+    metaTitle: 'دكتور أسنان قريب من شيراتون | عيادة الكحلوت للأسنان - جسر السويس',
+    metaDescription:
+      'عيادة الكحلوت للأسنان في جسر السويس بجوار مترو الهايكستب، قريبة من شيراتون. زراعة وتجميل وعلاج الأسنان مع د. عبدالرحمن الكحلوت. احجز بالواتساب أو التليفون.',
+    intro: [
+      'لو من سكان شيراتون ومحتاج دكتور أسنان قريب، عيادة الكحلوت للأسنان في جسر السويس بجوار محطة مترو الهايكستب.',
+      'يتابع الحالات د. عبدالرحمن الكحلوت، أخصائي جراحة وزراعة وتجميل الأسنان، من الكشف لحد آخر خطوة في العلاج.',
+    ],
+    whenTitle: 'خدمات العيادة لمرضى شيراتون',
+    when: [
+      'زراعة الأسنان وتعويض الأسنان المفقودة.',
+      'تجميل الأسنان وابتسامة هوليود.',
+      'علاج العصب وحشو الأسنان.',
+      'خلع ضرس العقل والجراحة.',
+      'تنظيف الجير وعلاج اللثة.',
+    ],
+    stepsTitle: 'إزاي توصل للعيادة من شيراتون',
+    steps: [
+      'بالعربية: اتجه ناحية جسر السويس والتجاريين، والعنوان ٦٤ شارع عبدالعزيز حجازي.',
+      'بالمترو: الخط التالت لحد محطة الهايكستب، والعيادة جنب المحطة.',
+      MAPS_STEP,
+      BOOK_STEP,
+    ],
+    faqs: [
+      {
+        q: 'العيادة فين بالظبط بالنسبة لشيراتون؟',
+        a: 'العيادة في ٦٤ شارع عبدالعزيز حجازي، التجاريين، جسر السويس، بجوار محطة مترو الهايكستب.',
+      },
+      SERVICES_FAQ,
+      BOOK_FAQ,
+    ],
+  },
+  {
+    section: 'areas',
+    slug: 'obour',
+    serviceId: 'consultation',
+    h1: 'دكتور أسنان قريب من مدينة العبور',
+    metaTitle: 'دكتور أسنان قريب من مدينة العبور | عيادة الكحلوت للأسنان - جسر السويس',
+    metaDescription:
+      'عيادة الكحلوت للأسنان في جسر السويس بجوار مترو الهايكستب، قريبة من مدينة العبور عن طريق الدائري أو محطة عدلي منصور. احجز كشفك مع د. عبدالرحمن الكحلوت بالواتساب أو التليفون.',
+    intro: [
+      'لو ساكن في مدينة العبور ومحتاج دكتور أسنان، عيادة الكحلوت للأسنان في جسر السويس بجوار محطة مترو الهايكستب، والطريق ليها سهل عن طريق الدائري أو من محطة عدلي منصور.',
+      'في العيادة د. عبدالرحمن الكحلوت، أخصائي جراحة وزراعة وتجميل الأسنان وعضو الجمعية المصرية لزراعة الأسنان.',
+    ],
+    whenTitle: 'خدمات العيادة لمرضى العبور',
+    when: [
+      'زراعة الأسنان وتعويض الأسنان المفقودة.',
+      'تجميل الأسنان وابتسامة هوليود.',
+      'علاج العصب وحشو الأسنان.',
+      'خلع ضرس العقل والجراحة.',
+      'تقويم الأسنان وأسنان الأطفال.',
+    ],
+    stepsTitle: 'إزاي توصل للعيادة من العبور',
+    steps: [
+      'بالعربية: عن طريق الطريق الدائري لحد جسر السويس، والعنوان ٦٤ شارع عبدالعزيز حجازي، التجاريين.',
+      'بالمواصلات: لحد محطة عدلي منصور، ومنها المترو الخط التالت محطة واحدة لحد الهايكستب، والعيادة جنب المحطة.',
+      MAPS_STEP,
+      BOOK_STEP,
+    ],
+    faqs: [
+      {
+        q: 'العيادة فين بالظبط بالنسبة للعبور؟',
+        a: 'العيادة في ٦٤ شارع عبدالعزيز حجازي، التجاريين، جسر السويس، بجوار محطة مترو الهايكستب، وهي المحطة اللي قبل عدلي منصور على الخط التالت.',
+      },
+      SERVICES_FAQ,
+      BOOK_FAQ,
+    ],
+  },
+];
+
+/** Every landing page (services + areas), e.g. for prerendering. */
+export const LANDING_PAGES: ServicePageData[] = [...SERVICE_PAGES, ...AREA_PAGES];
+
+/** Area name as written in SERVED_AREAS -> slug of its landing page. */
+export const AREA_PAGE_BY_NAME: Record<string, string> = {
+  'مدينة نصر': 'nasr-city',
+  'شيراتون': 'sheraton',
+  'مدينة العبور': 'obour',
+};
+
 export function findServicePage(slug: string | undefined): ServicePageData | undefined {
-  return SERVICE_PAGES.find((p) => p.slug === slug);
+  return LANDING_PAGES.find((p) => p.slug === slug);
 }
 
+/** URL of a landing page: /services/<slug>/ or /areas/<slug>/ */
 export function servicePath(slug: string): string {
-  return `/services/${slug}/`;
+  const page = findServicePage(slug);
+  return `/${page?.section ?? 'services'}/${slug}/`;
 }
 
 export function servicePageFromPath(pathname: string): string | undefined {
-  const m = pathname.match(/^\/services\/([a-z0-9-]+)\/?$/);
-  return m && findServicePage(m[1]) ? m[1] : undefined;
+  const m = pathname.match(/^\/(services|areas)\/([a-z0-9-]+)\/?$/);
+  if (!m) return undefined;
+  const page = findServicePage(m[2]);
+  return page && (page.section ?? 'services') === m[1] ? page.slug : undefined;
 }

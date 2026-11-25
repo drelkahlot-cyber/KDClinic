@@ -1,7 +1,7 @@
 import React from 'react';
 import { MessageCircle, Phone, MapPin, CalendarCheck, CheckCircle2, ArrowUpLeft, HelpCircle, Home } from 'lucide-react';
 import { CLINIC_INFO, SERVICES_LIST, OPENING_HOURS, buildWhatsAppUrl } from '../data/clinicData';
-import { SERVICE_PAGES, ServicePageData, servicePath } from '../data/servicePages';
+import { SERVICE_PAGES, AREA_PAGES, ServicePageData, servicePath } from '../data/servicePages';
 
 /**
  * Landing page for one service (Arabic only), e.g. /services/dental-implants/.
@@ -10,7 +10,9 @@ import { SERVICE_PAGES, ServicePageData, servicePath } from '../data/servicePage
 export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
   const service = SERVICES_LIST.find((s) => s.id === page.serviceId);
   const whatsappHref = service ? buildWhatsAppUrl(service.whatsappText) : CLINIC_INFO.whatsappDefaultUrl;
+  const isArea = page.section === 'areas';
   const others = SERVICE_PAGES.filter((p) => p.slug !== page.slug);
+  const otherAreas = AREA_PAGES.filter((p) => p.slug !== page.slug);
 
   return (
     <article className="py-6 sm:py-10">
@@ -88,7 +90,7 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
         </section>
 
         <section className="rounded-3xl p-6 bg-[var(--surface)] border border-[var(--line)] shadow-[var(--card-shadow)]">
-          <h2 className="text-lg sm:text-xl font-black text-[var(--ink)]">خطوات العلاج في العيادة</h2>
+          <h2 className="text-lg sm:text-xl font-black text-[var(--ink)]">{page.stepsTitle ?? 'خطوات العلاج في العيادة'}</h2>
           <ol className="mt-3 space-y-2">
             {page.steps.map((s, i) => (
               <li key={s} className="flex items-start gap-3 text-sm sm:text-base text-[var(--ink)]">
@@ -143,8 +145,8 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
         </p>
       </section>
 
-      <nav aria-label="خدمات أخرى" className="mt-6">
-        <h2 className="text-base sm:text-lg font-black text-[var(--ink)]">خدمات أخرى في العيادة</h2>
+      <nav aria-label={isArea ? "خدمات العيادة ومناطق أخرى" : "خدمات أخرى"} className="mt-6">
+        <h2 className="text-base sm:text-lg font-black text-[var(--ink)]">{isArea ? 'خدمات العيادة' : 'خدمات أخرى في العيادة'}</h2>
         <div className="mt-3 flex flex-wrap gap-2">
           {others.map((o) => (
             <a
@@ -156,6 +158,17 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
               <ArrowUpLeft className="w-3.5 h-3.5" />
             </a>
           ))}
+          {isArea &&
+            otherAreas.map((o) => (
+              <a
+                key={o.slug}
+                href={servicePath(o.slug)}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--surface)] border border-[var(--line)] hover:border-[var(--brand)] text-xs sm:text-sm font-bold text-[var(--ink)] transition"
+              >
+                <MapPin className="w-3.5 h-3.5 text-[var(--brand)]" />
+                <span>{o.h1}</span>
+              </a>
+            ))}
           <a
             href="/"
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--brand)] text-[var(--brand-ink)] text-xs sm:text-sm font-bold"
