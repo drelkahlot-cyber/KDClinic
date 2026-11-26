@@ -10,7 +10,9 @@
  *   QUESTIONS_SHEET_URL optional, Google Apps Script web app URL; every question is logged there
  *                       (see docs/chatbot-questions-sheet.gs).
  */
-import { quickAnswer, systemPrompt } from './_knowledge';
+// ".js" is required: the site is an ES module package, and Node needs the
+// file extension at runtime (Vercel compiles _knowledge.ts to _knowledge.js).
+import { quickAnswer, systemPrompt } from './_knowledge.js';
 
 type Role = 'user' | 'bot';
 interface Msg { role: Role; text: string }
