@@ -5,6 +5,7 @@ import App from "./App";
 import { langFromPath } from "./i18n";
 import { servicePageFromPath } from "./data/servicePages";
 import { Analytics } from "@vercel/analytics/react";
+import { ChatWidget } from "./components/ChatWidget";
 
 const path = window.location.pathname;
 
@@ -34,3 +35,9 @@ createRoot(document.getElementById("root")!).render(
     <Analytics />
   </StrictMode>
 );
+
+// Website chat bot, in its own root so the page markup stays as prerendered.
+const chatRoot = document.createElement("div");
+chatRoot.id = "kdc-chat-root";
+document.body.appendChild(chatRoot);
+createRoot(chatRoot).render(<ChatWidget lang={langFromPath(path)} />);
