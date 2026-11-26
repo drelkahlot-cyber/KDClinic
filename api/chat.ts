@@ -51,7 +51,9 @@ async function askGemini(key: string, lang: 'ar' | 'en', messages: Msg[]): Promi
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: systemPrompt(lang) }] },
         contents: messages.map((m) => ({ role: m.role === 'bot' ? 'model' : 'user', parts: [{ text: m.text }] })),
-        generationConfig: { temperature: 0.3, maxOutputTokens: 400 },
+        // thinkingBudget 0: short factual replies need no "thinking", which would
+        // otherwise eat the output budget and cut replies off mid-sentence.
+        generationConfig: { temperature: 0.3, maxOutputTokens: 1024, thinkingConfig: { thinkingBudget: 0 } },
       }),
     });
     if (!res.ok) {
@@ -59,9 +61,15 @@ async function askGemini(key: string, lang: 'ar' | 'en', messages: Msg[]): Promi
       return null;
     }
     const data = (await res.json()) as {
-      candidates?: { content?: { parts?: { text?: string }[] } }[];
+      candidates?: { finishReason?: string; content?: { parts?: { text?: string; thought?: boolean }[] } }[];
     };
-    const text = data.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('').trim();
+    const cand = data.candidates?.[0];
+    const text = cand?.content?.parts?.filter((p) => !p.thought).map((p) => p.text ?? '').join('').trim();
+    // A reply cut off by the token limit reads badly; use a ready answer instead.
+    if (cand?.finishReason && cand.finishReason !== 'STOP') {
+      console.error('gemini finish', cand.finishReason);
+      return null;
+    }
     return text || null;
   } catch (err) {
     console.error('gemini failed', String(err));
