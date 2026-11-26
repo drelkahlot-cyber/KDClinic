@@ -6,7 +6,7 @@
  *
  * Environment variables (Vercel → Project → Settings → Environment Variables):
  *   GEMINI_API_KEY     free key from Google AI Studio. Without it the bot uses quick answers only.
- *   GEMINI_MODEL       optional, default "gemini-flash-latest".
+ *   GEMINI_MODELS      optional, models tried in order, default "gemini-flash-latest,gemini-flash-lite-latest".
  *   QUESTIONS_SHEET_URL optional, Google Apps Script web app URL; every question is logged there
  *                       (see docs/chatbot-questions-sheet.gs).
  */
@@ -38,11 +38,25 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
+// Free-tier models are tried in order; when one is busy (503), over quota (429)
+// or slow, the next one gets the question. Override with GEMINI_MODELS="a,b".
+const MODELS = (process.env.GEMINI_MODELS || process.env.GEMINI_MODEL || 'gemini-flash-latest,gemini-flash-lite-latest')
+  .split(',')
+  .map((m) => m.trim())
+  .filter(Boolean);
+
 async function askGemini(key: string, lang: 'ar' | 'en', messages: Msg[]): Promise<string | null> {
-  const model = process.env.GEMINI_MODEL || 'gemini-flash-latest';
+  for (const model of MODELS) {
+    const reply = await askModel(key, model, lang, messages);
+    if (reply) return reply;
+  }
+  return null;
+}
+
+async function askModel(key: string, model: string, lang: 'ar' | 'en', messages: Msg[], noThinking = true): Promise<string | null> {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 12_000);
+  const timer = setTimeout(() => ctrl.abort(), 9_000);
   try {
     const res = await fetch(url, {
       method: 'POST',
@@ -53,11 +67,21 @@ async function askGemini(key: string, lang: 'ar' | 'en', messages: Msg[]): Promi
         contents: messages.map((m) => ({ role: m.role === 'bot' ? 'model' : 'user', parts: [{ text: m.text }] })),
         // thinkingBudget 0: short factual replies need no "thinking", which would
         // otherwise eat the output budget and cut replies off mid-sentence.
-        generationConfig: { temperature: 0.3, maxOutputTokens: 1024, thinkingConfig: { thinkingBudget: 0 } },
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 1024,
+          ...(noThinking ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
+        },
       }),
     });
     if (!res.ok) {
-      console.error('gemini error', res.status, (await res.text()).slice(0, 300));
+      const errText = (await res.text()).slice(0, 300);
+      console.error('gemini error', model, res.status, errText);
+      // Some models refuse thinkingBudget 0; ask them again without it.
+      if (res.status === 400 && noThinking && /thinking/i.test(errText)) {
+        clearTimeout(timer);
+        return askModel(key, model, lang, messages, false);
+      }
       return null;
     }
     const data = (await res.json()) as {
@@ -67,12 +91,12 @@ async function askGemini(key: string, lang: 'ar' | 'en', messages: Msg[]): Promi
     const text = cand?.content?.parts?.filter((p) => !p.thought).map((p) => p.text ?? '').join('').trim();
     // A reply cut off by the token limit reads badly; use a ready answer instead.
     if (cand?.finishReason && cand.finishReason !== 'STOP') {
-      console.error('gemini finish', cand.finishReason);
+      console.error('gemini finish', model, cand.finishReason);
       return null;
     }
     return text || null;
   } catch (err) {
-    console.error('gemini failed', String(err));
+    console.error('gemini failed', model, String(err));
     return null;
   } finally {
     clearTimeout(timer);
