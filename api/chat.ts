@@ -77,8 +77,9 @@ async function askModel(key: string, model: string, lang: 'ar' | 'en', messages:
     if (!res.ok) {
       const errText = (await res.text()).slice(0, 300);
       console.error('gemini error', model, res.status, errText);
-      // Some models refuse thinkingBudget 0; ask them again without it.
-      if (res.status === 400 && noThinking && /thinking/i.test(errText)) {
+      // Some models refuse thinkingBudget 0 (often as a bare "invalid argument");
+      // ask them again without it.
+      if (res.status === 400 && noThinking) {
         clearTimeout(timer);
         return askModel(key, model, lang, messages, false);
       }
