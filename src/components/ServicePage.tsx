@@ -1,26 +1,35 @@
 import React from 'react';
 import { MessageCircle, Phone, MapPin, CalendarCheck, CheckCircle2, ArrowUpLeft, HelpCircle, Home } from 'lucide-react';
 import { CLINIC_INFO, SERVICES_LIST, OPENING_HOURS, buildWhatsAppUrl } from '../data/clinicData';
-import { SERVICE_PAGES, AREA_PAGES, ServicePageData, servicePath } from '../data/servicePages';
+import { SERVICE_PAGES, AREA_PAGES, EN_PAGES, ServicePageData, servicePath } from '../data/servicePages';
+import { useT } from '../i18n';
 
 /**
- * Landing page for one service (Arabic only), e.g. /services/dental-implants/.
- * Rendered inside the normal page shell (header, footer, mobile action bar).
+ * Landing page for one service or area, e.g. /services/dental-implants/
+ * (Arabic), or an English page under /en/<slug>/. Rendered inside the normal
+ * page shell (header, footer, mobile action bar). UI labels go through t(),
+ * so the English pages need their labels in src/i18n-en.ts.
  */
 export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
   const service = SERVICES_LIST.find((s) => s.id === page.serviceId);
-  const whatsappHref = service ? buildWhatsAppUrl(service.whatsappText) : CLINIC_INFO.whatsappDefaultUrl;
+  const t = useT();
+  const isEn = page.lang === 'en';
+  const whatsappText = page.whatsappText ?? service?.whatsappText;
+  const whatsappHref = whatsappText ? buildWhatsAppUrl(whatsappText) : CLINIC_INFO.whatsappDefaultUrl;
   const isArea = page.section === 'areas';
-  const others = SERVICE_PAGES.filter((p) => p.slug !== page.slug);
-  const otherAreas = AREA_PAGES.filter((p) => p.slug !== page.slug);
+  // Every Arabic page links to every other landing page, so search engines
+  // find all of them from any page they reach first.
+  const others = isEn ? [] : SERVICE_PAGES.filter((p) => p.slug !== page.slug);
+  const otherAreas = isEn ? [] : AREA_PAGES.filter((p) => p.slug !== page.slug);
+  const homeHref = isEn ? '/en/' : '/';
 
   return (
     <article className="py-6 sm:py-10">
       {/* Breadcrumb */}
-      <nav aria-label="مسار الصفحة" className="text-xs sm:text-sm text-[var(--muted)] mb-4">
-        <a href="/" className="inline-flex items-center gap-1 hover:text-[var(--brand)]">
+      <nav aria-label={t("مسار الصفحة")} className="text-xs sm:text-sm text-[var(--muted)] mb-4">
+        <a href={homeHref} className="inline-flex items-center gap-1 hover:text-[var(--brand)]">
           <Home className="w-3.5 h-3.5" />
-          <span>{CLINIC_INFO.nameAr}</span>
+          <span>{t(CLINIC_INFO.nameAr)}</span>
         </a>
         <span className="mx-2">/</span>
         <span className="text-[var(--ink)] font-bold">{page.h1}</span>
@@ -30,7 +39,7 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
         <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-l from-[#0F5C6E] via-[#C9A227] to-[#1E9E55]" />
         <h1 className="text-2xl sm:text-4xl font-black text-[var(--ink)] leading-snug">{page.h1}</h1>
         <p className="mt-2 text-sm sm:text-base font-bold text-[var(--brand)]">
-          {CLINIC_INFO.doctorName} — {CLINIC_INFO.doctorTitle}
+          {t(CLINIC_INFO.doctorName)} — {t(CLINIC_INFO.doctorTitle)}
         </p>
         <div className="mt-4 space-y-3 text-sm sm:text-base text-[var(--ink)] leading-relaxed">
           {page.intro.map((p) => (
@@ -46,7 +55,7 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
             className="col-span-2 sm:col-span-1 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-[#1E9E55] hover:bg-[#178044] text-white font-extrabold text-sm shadow-sm transition"
           >
             <MessageCircle className="w-4 h-4" />
-            <span>احجز على واتساب</span>
+            <span>{t('احجز على واتساب')}</span>
           </a>
           <a
             href={`tel:${CLINIC_INFO.phonePrimary}`}
@@ -62,7 +71,7 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
             className="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-[#0066BE] hover:bg-[#00529B] text-white font-extrabold text-sm shadow-sm transition"
           >
             <CalendarCheck className="w-4 h-4" />
-            <span>فيزيتا</span>
+            <span>{t('فيزيتا')}</span>
           </a>
           <a
             href={CLINIC_INFO.mapsUrl}
@@ -71,7 +80,7 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
             className="col-span-2 sm:col-span-1 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-[var(--bg)] border border-[var(--line)] text-[var(--ink)] font-extrabold text-sm"
           >
             <MapPin className="w-4 h-4 text-[var(--brand)]" />
-            <span>موقع العيادة</span>
+            <span>{t('موقع العيادة')}</span>
           </a>
         </div>
       </header>
@@ -90,7 +99,7 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
         </section>
 
         <section className="rounded-3xl p-6 bg-[var(--surface)] border border-[var(--line)] shadow-[var(--card-shadow)]">
-          <h2 className="text-lg sm:text-xl font-black text-[var(--ink)]">{page.stepsTitle ?? 'خطوات العلاج في العيادة'}</h2>
+          <h2 className="text-lg sm:text-xl font-black text-[var(--ink)]">{page.stepsTitle ?? t('خطوات العلاج في العيادة')}</h2>
           <ol className="mt-3 space-y-2">
             {page.steps.map((s, i) => (
               <li key={s} className="flex items-start gap-3 text-sm sm:text-base text-[var(--ink)]">
@@ -120,7 +129,7 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
       <section className="mt-6" aria-labelledby="service-faq-heading">
         <h2 id="service-faq-heading" className="text-lg sm:text-xl font-black text-[var(--ink)] flex items-center gap-2">
           <HelpCircle className="w-5 h-5 text-[var(--brand)]" />
-          <span>أسئلة شائعة</span>
+          <span>{t('أسئلة شائعة')}</span>
         </h2>
         <div className="mt-3 grid gap-2.5">
           {page.faqs.map((f) => (
@@ -138,15 +147,17 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
       </section>
 
       <section className="mt-6 rounded-3xl p-6 bg-[var(--surface)] border border-[var(--line)]">
-        <h2 className="text-base sm:text-lg font-black text-[var(--ink)]">العنوان والمواعيد</h2>
-        <p className="mt-2 text-sm sm:text-base text-[var(--ink)]">{CLINIC_INFO.addressFull}</p>
+        <h2 className="text-base sm:text-lg font-black text-[var(--ink)]">{t('العنوان والمواعيد')}</h2>
+        <p className="mt-2 text-sm sm:text-base text-[var(--ink)]">{t(CLINIC_INFO.addressFull)}</p>
         <p className="mt-1 text-sm text-[var(--muted)]">
-          {OPENING_HOURS.days}: {OPENING_HOURS.time} — {OPENING_HOURS.closed}
+          {t(OPENING_HOURS.days)}: {t(OPENING_HOURS.time)} — {t(OPENING_HOURS.closed)}
         </p>
       </section>
 
-      <nav aria-label={isArea ? "خدمات العيادة ومناطق أخرى" : "خدمات أخرى"} className="mt-6">
-        <h2 className="text-base sm:text-lg font-black text-[var(--ink)]">{isArea ? 'خدمات العيادة' : 'خدمات أخرى في العيادة'}</h2>
+      <nav aria-label={isEn ? 'More from the clinic' : 'خدمات العيادة والمناطق'} className="mt-6">
+        <h2 className="text-base sm:text-lg font-black text-[var(--ink)]">
+          {isEn ? 'More from the clinic' : isArea ? 'خدمات العيادة' : 'خدمات أخرى في العيادة'}
+        </h2>
         <div className="mt-3 flex flex-wrap gap-2">
           {others.map((o) => (
             <a
@@ -158,8 +169,12 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
               <ArrowUpLeft className="w-3.5 h-3.5" />
             </a>
           ))}
-          {isArea &&
-            otherAreas.map((o) => (
+          {otherAreas.length > 0 && (
+            <h3 className="basis-full mt-2 text-sm font-extrabold text-[var(--ink)]">
+              {isArea ? 'مناطق أخرى قريبة من العيادة' : 'العيادة قريبة من'}
+            </h3>
+          )}
+          {otherAreas.map((o) => (
               <a
                 key={o.slug}
                 href={servicePath(o.slug)}
@@ -169,12 +184,26 @@ export const ServicePage: React.FC<{ page: ServicePageData }> = ({ page }) => {
                 <span>{o.h1}</span>
               </a>
             ))}
+          {!isEn &&
+            EN_PAGES.map((o) => (
+              <a
+                key={o.slug}
+                href={servicePath(o.slug)}
+                hrefLang="en"
+                lang="en"
+                dir="ltr"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--surface)] border border-[var(--line)] hover:border-[var(--brand)] text-xs sm:text-sm font-bold text-[var(--ink)] transition"
+              >
+                <span>International patients (English)</span>
+                <ArrowUpLeft className="w-3.5 h-3.5" />
+              </a>
+            ))}
           <a
-            href="/"
+            href={homeHref}
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--brand)] text-[var(--brand-ink)] text-xs sm:text-sm font-bold"
           >
             <Home className="w-3.5 h-3.5" />
-            <span>الصفحة الرئيسية للعيادة</span>
+            <span>{isEn ? 'El Kahlot Dental Clinic home page' : 'الصفحة الرئيسية للعيادة'}</span>
           </a>
         </div>
       </nav>

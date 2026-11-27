@@ -237,4 +237,12 @@ export const EN: Record<string, string> = {
   "مدينة العبور": "El Obour City",
   "مصر الجديدة": "Heliopolis",
   "عين شمس": "Ain Shams",
+  "النزهة": "El Nozha",
+  // Labels on the English landing pages (/en/<slug>/, src/components/ServicePage.tsx)
+  "مسار الصفحة": "Breadcrumb",
+  "فيزيتا": "Vezeeta",
+  "موقع العيادة": "Clinic location",
+  "خطوات العلاج في العيادة": "Treatment steps at the clinic",
+  "أسئلة شائعة": "Frequently asked questions",
+  "العنوان والمواعيد": "Address and opening hours",
 };

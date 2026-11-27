@@ -207,7 +207,13 @@ export const DoctorAndLocationSection: React.FC = () => {
                 })}
               </ul>
               <p className="mt-3 text-sm font-bold text-[var(--brand)] leading-relaxed">
-                {t("وبيجيلنا مرضى من كل محافظات مصر، ومرضى من خارج مصر من دول كتير حوالين العالم.")}
+                <a
+                  href="/en/international-patients/"
+                  hrefLang="en"
+                  className="underline underline-offset-4 decoration-[var(--line)] hover:decoration-[var(--brand)] transition"
+                >
+                  {t("وبيجيلنا مرضى من كل محافظات مصر، ومرضى من خارج مصر من دول كتير حوالين العالم.")}
+                </a>
               </p>
             </div>
 

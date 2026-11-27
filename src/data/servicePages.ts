@@ -21,8 +21,14 @@ export interface ServicePageCase {
 }
 
 export interface ServicePageData {
-  /** URL section: /services/<slug>/ (default) or /areas/<slug>/ */
-  section?: 'services' | 'areas';
+  /** URL section: /services/<slug>/ (default), /areas/<slug>/ or /en/<slug>/ */
+  section?: 'services' | 'areas' | 'en';
+  /** Page language; only the /en/ pages are English. */
+  lang?: 'ar' | 'en';
+  /** Date the page content last changed (sitemap <lastmod>); defaults to SITE_UPDATED in scripts/prerender.mjs. */
+  updated?: string;
+  /** WhatsApp message for this page (defaults to the service's message). */
+  whatsappText?: string;
   slug: string;
   /** id in SERVICES_LIST, used for the WhatsApp message */
   serviceId: string;
@@ -615,6 +621,81 @@ export const AREA_PAGES: ServicePageData[] = [
   },
 ];
 
+AREA_PAGES.push(
+  {
+    section: 'areas',
+    slug: 'el-nozha',
+    serviceId: 'consultation',
+    h1: 'دكتور أسنان قريب من النزهة',
+    metaTitle: 'دكتور أسنان قريب من النزهة | عيادة الكحلوت للأسنان - جسر السويس',
+    metaDescription:
+      'عيادة الكحلوت للأسنان في جسر السويس بجوار مترو الهايكستب، قريبة من النزهة على الخط التالت للمترو (محطة النزهة). زراعة وتجميل وعلاج الأسنان مع د. عبدالرحمن الكحلوت. احجز بالواتساب.',
+    intro: [
+      'لو ساكن أو شغال في النزهة ومحتاج دكتور أسنان، عيادة الكحلوت للأسنان في جسر السويس بجوار محطة مترو الهايكستب، على نفس الخط التالت اللي فيه محطة النزهة.',
+      'في العيادة د. عبدالرحمن الكحلوت، أخصائي جراحة وزراعة وتجميل الأسنان وعضو الجمعية المصرية لزراعة الأسنان، والعيادة مفتوحة من السبت للخميس لحد 10 بالليل.',
+    ],
+    whenTitle: 'خدمات العيادة لمرضى النزهة',
+    when: [
+      'زراعة الأسنان وتعويض الأسنان المفقودة.',
+      'تجميل الأسنان وابتسامة هوليود.',
+      'علاج العصب وحشو الأسنان.',
+      'خلع ضرس العقل والجراحة.',
+      'تقويم الأسنان وأسنان الأطفال.',
+    ],
+    stepsTitle: 'إزاي توصل للعيادة من النزهة',
+    steps: [
+      'بالمترو: اركب الخط التالت من محطة النزهة في اتجاه عدلي منصور، وانزل محطة الهايكستب، والعيادة جنب المحطة.',
+      'بالعربية: اتجه ناحية جسر السويس والتجاريين، والعنوان ٦٤ شارع عبدالعزيز حجازي.',
+      MAPS_STEP,
+      BOOK_STEP,
+    ],
+    faqs: [
+      {
+        q: 'العيادة فين بالظبط بالنسبة للنزهة؟',
+        a: 'العيادة في ٦٤ شارع عبدالعزيز حجازي، التجاريين، جسر السويس، بجوار محطة مترو الهايكستب على الخط التالت، نفس الخط اللي فيه محطة النزهة.',
+      },
+      SERVICES_FAQ,
+      BOOK_FAQ,
+    ],
+  },
+  {
+    section: 'areas',
+    slug: 'qubaa-city',
+    serviceId: 'consultation',
+    h1: 'دكتور أسنان قريب من مدينة قباء',
+    metaTitle: 'دكتور أسنان قريب من مدينة قباء | عيادة الكحلوت للأسنان - جسر السويس',
+    metaDescription:
+      'عيادة الكحلوت للأسنان في جسر السويس بجوار مترو الهايكستب، قريبة جدًا من مدينة قباء على الخط التالت للمترو (محطة قباء). احجز كشفك مع د. عبدالرحمن الكحلوت بالواتساب أو التليفون.',
+    intro: [
+      'لو من سكان مدينة قباء ومحتاج دكتور أسنان قريب، عيادة الكحلوت للأسنان في جسر السويس بجوار محطة مترو الهايكستب، على نفس الخط التالت اللي فيه محطة قباء.',
+      'يتابع الحالات د. عبدالرحمن الكحلوت، أخصائي جراحة وزراعة وتجميل الأسنان، من الكشف لحد آخر خطوة في العلاج، وبنقدم كل خدمات الأسنان الأساسية في مكان واحد.',
+    ],
+    whenTitle: 'خدمات العيادة لمرضى مدينة قباء',
+    when: [
+      'زراعة الأسنان وتعويض الأسنان المفقودة.',
+      'تجميل الأسنان وابتسامة هوليود.',
+      'علاج العصب وحشو الأسنان.',
+      'خلع ضرس العقل والجراحة.',
+      'تنظيف الجير وعلاج اللثة وأسنان الأطفال.',
+    ],
+    stepsTitle: 'إزاي توصل للعيادة من مدينة قباء',
+    steps: [
+      'بالمترو: اركب الخط التالت من محطة قباء في اتجاه عدلي منصور، وانزل محطة الهايكستب، والعيادة جنب المحطة.',
+      'بالعربية: اتجه ناحية جسر السويس والتجاريين، والعنوان ٦٤ شارع عبدالعزيز حجازي.',
+      MAPS_STEP,
+      BOOK_STEP,
+    ],
+    faqs: [
+      {
+        q: 'العيادة فين بالظبط بالنسبة لمدينة قباء؟',
+        a: 'العيادة في ٦٤ شارع عبدالعزيز حجازي، التجاريين، جسر السويس، بجوار محطة مترو الهايكستب على الخط التالت، نفس الخط اللي فيه محطة قباء.',
+      },
+      SERVICES_FAQ,
+      BOOK_FAQ,
+    ],
+  },
+);
+
 /**
  * "Dental implants in <area>" pages (/areas/dental-implants-<area>/): the
  * service people search for most, combined with each area's directions.
@@ -624,6 +705,7 @@ const IMPLANT_AREAS: { area: string; name: string; short: string }[] = [
   { area: 'sheraton', name: 'شيراتون', short: 'شيراتون' },
   { area: 'obour', name: 'مدينة العبور', short: 'العبور' },
   { area: 'heliopolis', name: 'مصر الجديدة', short: 'مصر الجديدة' },
+  { area: 'el-nozha', name: 'النزهة', short: 'النزهة' },
 ];
 for (const { area, name, short } of IMPLANT_AREAS) {
   const base = AREA_PAGES.find((p) => p.slug === area)!;
@@ -661,8 +743,67 @@ for (const { area, name, short } of IMPLANT_AREAS) {
   });
 }
 
-/** Every landing page (services + areas), e.g. for prerendering. */
-export const LANDING_PAGES: ServicePageData[] = [...SERVICE_PAGES, ...AREA_PAGES];
+/**
+ * English pages at /en/<slug>/ for patients who live outside Egypt (expats
+ * visiting home and international visitors to Cairo). Same rules as the
+ * Arabic pages: no prices, promises or fixed number of visits; the plan is
+ * set by the doctor after the examination.
+ */
+export const EN_PAGES: ServicePageData[] = [
+  {
+    section: 'en',
+    lang: 'en',
+    slug: 'international-patients',
+    serviceId: 'consultation',
+    whatsappText:
+      'Hello El Kahlot Dental Clinic, I live outside Egypt and would like to plan dental treatment during my visit to Cairo.',
+    h1: 'Dental Treatment in Cairo for International Patients',
+    metaTitle: 'Dental Treatment in Cairo for International Patients | El Kahlot Dental Clinic',
+    metaDescription:
+      'Visiting Cairo? Plan dental implants, a Hollywood smile, veneers, zirconia crowns or root canal treatment at El Kahlot Dental Clinic in Gesr El Suez, next to Haykestep Metro. Dr. Abdelrahman El Kahlot. Message us on WhatsApp before you travel.',
+    intro: [
+      'El Kahlot Dental Clinic (KDC) welcomes patients who live outside Egypt: Egyptians abroad coming home for a visit, and international visitors to Cairo who want to plan their dental treatment ahead of the trip.',
+      'Treatment is led by Dr. Abdelrahman El Kahlot, specialist in oral surgery, dental implants and cosmetic dentistry and a member of the Egyptian Society of Dental Implants. The clinic is at 64 Abdel Aziz Hegazy St., El Togareen, Gesr El Suez, East Cairo, next to Haykestep Metro Station (Line 3).',
+    ],
+    whenTitle: 'Treatments international patients ask about',
+    when: [
+      'Dental implants to replace one or more missing teeth.',
+      'Cosmetic dentistry: Hollywood smile, veneers and zirconia crowns.',
+      'Root canal treatment and fillings.',
+      'Wisdom tooth extraction and oral surgery.',
+      "Orthodontics, children's dentistry, scaling and gum treatment.",
+      'The right plan for you is decided by the doctor after the examination and X-rays.',
+    ],
+    stepsTitle: 'How to plan your treatment from abroad',
+    steps: [
+      'Message us on WhatsApp before you travel. Tell us what you need and the dates you will be in Cairo, and send any recent X-rays or photos you have.',
+      'We book your first visit for the start of your stay, so there is time for the examination, X-rays and the treatment plan.',
+      'At the first visit the doctor examines you and explains the plan, the number of visits and how much of it fits into your trip.',
+      'Use the "Clinic location" button to open Google Maps and plan your route. By Metro, take Line 3 to Haykestep Station; the clinic is next to the station.',
+    ],
+    faqs: [
+      {
+        q: 'Can I finish my treatment in one trip?',
+        a: 'It depends on the treatment. Some treatments can be done in a few visits, while dental implants need healing time between steps. The doctor tells you what can fit into your stay after the examination.',
+      },
+      {
+        q: 'Can I send my X-rays before I travel?',
+        a: 'Yes. Send any recent X-rays or photos on WhatsApp to 01006641810 (+20 100 664 1810). The final treatment plan is always confirmed after the examination at the clinic.',
+      },
+      {
+        q: 'Where is the clinic and when is it open?',
+        a: 'The clinic is at 64 Abdel Aziz Hegazy St., El Togareen, Gesr El Suez, Cairo, next to Haykestep Metro Station. It is open Saturday to Thursday, 2:00 PM to 10:00 PM, and closed on Friday.',
+      },
+      {
+        q: 'How do I book?',
+        a: "Send a WhatsApp message to +20 100 664 1810, call the clinic on +20 101 961 6260, or book through the doctor's page on Vezeeta.",
+      },
+    ],
+  },
+];
+
+/** Every landing page (services + areas + English), e.g. for prerendering. */
+export const LANDING_PAGES: ServicePageData[] = [...SERVICE_PAGES, ...AREA_PAGES, ...EN_PAGES];
 
 /** Area name as written in SERVED_AREAS -> slug of its landing page. */
 export const AREA_PAGE_BY_NAME: Record<string, string> = {
@@ -672,6 +813,8 @@ export const AREA_PAGE_BY_NAME: Record<string, string> = {
   'مصر الجديدة': 'heliopolis',
   'مدينة السلام': 'el-salam-city',
   'عين شمس': 'ain-shams',
+  'النزهة': 'el-nozha',
+  'مدينة قباء': 'qubaa-city',
 };
 
 export function findServicePage(slug: string | undefined): ServicePageData | undefined {
@@ -685,7 +828,7 @@ export function servicePath(slug: string): string {
 }
 
 export function servicePageFromPath(pathname: string): string | undefined {
-  const m = pathname.match(/^\/(services|areas)\/([a-z0-9-]+)\/?$/);
+  const m = pathname.match(/^\/(services|areas|en)\/([a-z0-9-]+)\/?$/);
   if (!m) return undefined;
   const page = findServicePage(m[2]);
   return page && (page.section ?? 'services') === m[1] ? page.slug : undefined;
