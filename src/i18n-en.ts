@@ -206,6 +206,7 @@ export const EN: Record<string, string> = {
   "آراء مرضانا": "What Our Patients Say",
   "اقرأ كل التقييمات على جوجل": "Read all reviews on Google",
   "مراجعة على خرائط جوجل": "Google Maps review (in Arabic)",
+  "محمد م.": "Mohamed M.",
   "وائل ي.": "Wael Y.",
   "ريمان ع.": "Reeman A.",
   "بسمة أ.": "Basma A.",

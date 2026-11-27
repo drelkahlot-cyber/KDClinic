@@ -329,7 +329,7 @@ export interface PatientReview {
 // on the date below. Update the numbers and date together.
 export const REVIEW_PLATFORMS = {
   checkedOn: 'نوفمبر 2026',
-  google: { rating: '4.6', count: 10 },
+  google: { rating: '4.6', count: 11 },
   vezeeta: { rating: '4.5', count: 12 },
   clinido: { rating: '5.0', count: 2 },
 } as const;
@@ -340,6 +340,12 @@ export const CLINIDO_URL = 'https://clinido.com/ar/drprofile/1371111/35334';
 // listing (first name + initial only). Add new ones the same way; never edit
 // or invent review text.
 export const PATIENT_REVIEWS: PatientReview[] = [
+  {
+    id: 'review-mohamed-m',
+    source: 'google',
+    author: 'محمد م.',
+    text: 'ما شاء الله تبارك الله أناقة في العمل والتشخيص وراحة المريض أساسيات العيادة وانضباط في المواعيد دون ضغط',
+  },
   {
     id: 'review-wael',
     source: 'google',
