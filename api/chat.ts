@@ -19,6 +19,26 @@ interface Msg { role: Role; text: string }
 
 const MAX_TEXT = 500;
 const MAX_TURNS = 8;
+const MAX_BODY = 16_000; // bytes; a real chat body is far smaller
+
+// Only the clinic's own pages may call the bot (stops other sites and simple
+// scripts from using up the Gemini quota or filling the questions sheet).
+const ALLOWED_HOSTS = /^(www\.)?kahlotdental\.com$|^kdclinic[a-z0-9-]*\.vercel\.app$|^localhost$|^127\.0\.0\.1$/i;
+function fromOwnSite(request: Request): boolean {
+  const origin = request.headers.get('origin') || request.headers.get('referer');
+  if (!origin) return false;
+  try {
+    return ALLOWED_HOSTS.test(new URL(origin).hostname);
+  } catch {
+    return false;
+  }
+}
+
+// Google Sheets runs cells that start with = + - @ as formulas; a visitor could
+// otherwise plant a formula (e.g. one that sends the sheet's data elsewhere).
+function sheetSafe(v: string): string {
+  return /^[=+\-@\t\r]/.test(v) ? `'${v}` : v;
+}
 
 // Best-effort limit per visitor while a server instance stays warm.
 const hits = new Map<string, number[]>();
@@ -34,7 +54,11 @@ function tooMany(ip: string): boolean {
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+      'x-content-type-options': 'nosniff',
+    },
   });
 }
 
@@ -112,7 +136,7 @@ async function logQuestion(row: Record<string, string>): Promise<void> {
     await fetch(sheet, {
       method: 'POST',
       headers: { 'content-type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(row),
+      body: JSON.stringify(Object.fromEntries(Object.entries(row).map(([k, v]) => [k, sheetSafe(v)]))),
     });
   } catch (err) {
     console.error('sheet log failed', String(err));
@@ -120,12 +144,21 @@ async function logQuestion(row: Record<string, string>): Promise<void> {
 }
 
 export async function POST(request: Request): Promise<Response> {
+  if (!fromOwnSite(request)) return json({ error: 'forbidden' }, 403);
+  if (!(request.headers.get('content-type') ?? '').includes('application/json')) {
+    return json({ error: 'bad content type' }, 415);
+  }
+  if (Number(request.headers.get('content-length') ?? 0) > MAX_BODY) return json({ error: 'too large' }, 413);
+
   let body: { lang?: string; page?: string; messages?: Msg[] };
   try {
-    body = await request.json();
+    const raw = await request.text();
+    if (raw.length > MAX_BODY) return json({ error: 'too large' }, 413);
+    body = JSON.parse(raw);
   } catch {
     return json({ error: 'bad json' }, 400);
   }
+  if (!body || typeof body !== 'object') return json({ error: 'bad json' }, 400);
 
   const lang: 'ar' | 'en' = body.lang === 'en' ? 'en' : 'ar';
   const messages = (Array.isArray(body.messages) ? body.messages : [])
@@ -137,12 +170,19 @@ export async function POST(request: Request): Promise<Response> {
   // Gemini needs the conversation to start with the visitor.
   while (messages.length && messages[0].role !== 'user') messages.shift();
 
-  const ip = (request.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'unknown';
+  // Vercel sets x-real-ip / x-vercel-forwarded-for itself, so a visitor cannot
+  // fake them to dodge the limit (the first x-forwarded-for entry can be faked).
+  const ip =
+    request.headers.get('x-real-ip') ||
+    (request.headers.get('x-vercel-forwarded-for') ?? '').split(',')[0].trim() ||
+    (request.headers.get('x-forwarded-for') ?? '').split(',').pop()?.trim() ||
+    'unknown';
+  if (tooMany(ip)) return json({ reply: quickAnswer(last.text, lang), source: 'quick' }, 429);
   const key = process.env.GEMINI_API_KEY;
 
   let reply: string | null = null;
   let source: 'ai' | 'quick' = 'quick';
-  if (key && !tooMany(ip)) {
+  if (key) {
     reply = await askGemini(key, lang, messages);
     if (reply) source = 'ai';
   }
@@ -151,7 +191,7 @@ export async function POST(request: Request): Promise<Response> {
   await logQuestion({
     time: new Date().toISOString(),
     lang,
-    page: String(body.page ?? '').slice(0, 120),
+    page: String(body.page ?? '').replace(/[^\w\-./#?=&%]/g, '').slice(0, 120),
     question: last.text,
     answer: reply,
     source,

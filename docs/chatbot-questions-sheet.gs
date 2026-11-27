@@ -11,6 +11,12 @@
  *
  * Columns: time | lang | page | question | answer | source (ai = Gemini, quick = ready answer)
  */
+// Cells starting with = + - @ would run as formulas; store them as plain text.
+function safe(v, max) {
+  var s = String(v || '').slice(0, max);
+  return /^[=+\-@\t\r]/.test(s) ? "'" + s : s;
+}
+
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
   if (sheet.getLastRow() === 0) {
@@ -19,11 +25,11 @@ function doPost(e) {
   var row = JSON.parse(e.postData.contents);
   sheet.appendRow([
     new Date(row.time || new Date()),
-    row.lang || '',
-    row.page || '',
-    String(row.question || '').slice(0, 1000),
-    String(row.answer || '').slice(0, 2000),
-    row.source || '',
+    safe(row.lang, 10),
+    safe(row.page, 200),
+    safe(row.question, 1000),
+    safe(row.answer, 2000),
+    safe(row.source, 10),
   ]);
   return ContentService.createTextOutput('ok');
 }
