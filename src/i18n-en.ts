@@ -234,4 +234,6 @@ export const EN: Record<string, string> = {
   "شيراتون": "Sheraton",
   "مدينة نصر": "Nasr City",
   "مدينة العبور": "El Obour City",
+  "مصر الجديدة": "Heliopolis",
+  "عين شمس": "Ain Shams",
 };
